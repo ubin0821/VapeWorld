@@ -1,0 +1,254 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header th:fragment="header">
+
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+                            .aa {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                                display: flex;
+                                height: 80px;
+                                background-color: #ffffff;
+                                 margin-top: 30px;
+                            }
+
+                               .bb {
+                                display: flex;
+                                height: 80px;
+                                background-color: #ffffff;
+                                border-bottom: 1px solid #cccccc;
+                                margin-top: 10px;
+                            }
+
+                            .dropdown {
+
+
+                  display: absolute;
+                  top:45px;
+                               left:1037px;
+                            }
+
+
+                            .nav { /* 로그인 */
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+
+                            color: #0b5394;
+                                list-style-type: none;
+                             margin-top: -42px;
+                               margin-left: 1633px;
+                            }
+
+                            .logo {
+                                margin-left: 300px;
+                                margin-top: 5px;
+                            }
+                             .nav2 {/* 모든 메뉴 */
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                                display: flex;
+                                list-style-type: none;
+                                margin-top: 30px;
+                                 margin-left: 270px;
+                            }
+                            .nav2 img{/* 모든 메뉴 */
+                            margin-top: -6px; /* 이미지 위 아래 위치*/
+
+                             margin-right: -15px;
+                             margin-left: 8px;}
+
+                              .nav3 { /* 국내 여행 */
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                                display: flex;
+                                list-style-type: none;
+                                margin-top: 30px;
+                               margin-left: -30px;
+                            }
+                             .nav3 img{ /* 국내 여행 */
+                            margin-top: -20px; /* 이미지 위 아래 위치*/
+
+                             margin-right: -22px;
+                             margin-left: 9px;}
+
+
+                  .nav4 { /* 해외 여행 */
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                  display: flex;
+                                list-style-type: none;
+                                margin-top: 30px;
+                               margin-left: -30px;
+                  }
+                  .nav4 img{ /* 해외 여행 */
+                   margin-top: -15px;/* 이미지 위 아래 위치*/
+
+                             margin-right: -15px;
+                             margin-left: 15px;}
+                  }
+
+                              .nav5{
+   font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                               display: flex;
+                                list-style-type: none;
+                                margin-top: 100px;
+                               margin-left: 10px;
+                              }
+
+                  .nav5 img{
+                   margin-top: 20px;/* 이미지 위 아래 위치*/
+                             margin-right: -30px;
+                             margin-left: -17px;}
+                  .nav6{
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                   display: flex;
+                                list-style-type: none;
+                                 margin-top: 30px;
+                               margin-left: 4px;
+                              }
+
+                              .nav7{
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                               display: flex;
+                                list-style-type: none;
+                                margin-top: 30px;
+                               margin-left: 6px;
+                              }
+                              .nav8{ /* 반갑습니다 */
+                                  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                               display: flex;
+                                list-style-type: none;
+                                margin-top: 20px;
+                               margin-left: 190px;
+                              }
+                          .nav9{ /* 로그아웃 */
+                              font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                               color: #0b5394;
+                                list-style-type: none;
+                                margin-top: -44px;
+                               margin-left: -100px;
+                              }
+
+                               .nav10{
+                                   font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+                               display: flex;
+                                list-style-type: none;
+                                margin-top: 30px;
+                               margin-left: 4px;
+                              }
+
+
+
+
+        </style>
+    </head>
+    <body>
+
+    <div class="aa">
+        <a class="logo" href="/">
+            <img th:src="@{/css/images/logo.png}" height="80">
+        </a>
+
+
+        <div class="dropdown">
+            <button class="btn btn-link dropdown-toggle nav-link px-2" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                마이페이지
+            </button>
+
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/orders">예약 내역</a></li>
+                <li><a class="dropdown-item" href="/cart">찜 내역</a></li>
+                <li><a class="dropdown-item" href="/userQuestion">1:1문의</a></li>
+                <li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <ul class="nav" sec:authorize="isAnonymous()">
+        <li><a href="/members/login" class="nav-link">로그인</a></li>
+    </ul>
+
+
+    <!-- 이동된 부분 -->
+    <div class="bb">
+    <ul class="nav2">
+        <li><img th:src="@{/css/images/allmenu.png}" height="37"></li>
+        <li><a href="#" class="nav-link px-2 link-secondary">모든메뉴</a></li>
+    </ul>
+
+        <ul class="nav3">
+        <li><img th:src="@{/css/images/korea.png}" height="70"></li>
+        <li><a href="/domestic" class="nav-link px-2 link-secondary">국내 여행</a></li>
+    </ul>
+
+        <ul class="nav4">
+        <li><img th:src="@{/css/images/travel.png}" height="60"></li>
+        <li><a href="/overseas" class="nav-link px-2 link-secondary">해외 여행</a></li>
+    </ul>
+        <ul class="nav5">
+            <img th:src="@{/css/images/menuline.png}" height="50"></svg>
+        </ul>
+
+        <ul class="nav6">
+            <li><a href="#" class="nav-link px-2 link-secondary">이벤트</a></li>
+        </ul>
+
+        <ul class="nav10">
+            <li><a href="/qna" class="nav-link px-2 link-secondary">Q&A</a></li>
+        </ul>
+
+        <ul class="nav10">
+            <li><a href="/api/list" class="nav-link px-2 link-secondary">환율 계산</a></li>
+        </ul>
+
+
+        <ul class="nav7">
+             <li><a href="/admin/item/new" class="nav-link px-2 link-secondary">패키지 작성</a></li>
+             <li><a href="#" class="nav-link px-2 link-secondary">공지사항 작성</a></li>
+         </ul>
+
+
+
+
+
+         <ul class="nav9" sec:authorize = "isAuthenticated()">
+             <a class="nav-link" href="/members/logout">로그아웃</a>
+         </ul>
+
+
+    </div>
+    </body>
+</header>
+</html>

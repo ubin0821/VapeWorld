@@ -100,69 +100,6 @@
                 $('#send').click(function() {
                     var to = $('#to').val();
                 });
-
-                function sendVerificationCode() {
-                console.log("123")
-                    var phoneNumber = document.getElementById('tel').value;
-                    var telError = document.getElementById('telError');
-                    if (!phoneNumber) {
-                    console.log("222")
-                        telError.style.display = 'block';
-                        console.log("333")
-                        return;
-                    } else {
-                    console.log("444")
-                        telError.style.display = 'none';
-                    }
-
-                    // CSRF 토큰 가져오기 (만약 Spring Security를 사용하고 있다면)
-                    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-                    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-                    $.ajax({
-                        url: '/verification/sendVerificationCode',
-                        type: 'POST',
-                        data: { phoneNumber: phoneNumber },
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                        },
-                        success: function(response) {
-                            alert(response); // 서버에서 오는 메시지 ("인증번호가 전송되었습니다.")
-                        },
-                        error: function(error) {
-                            console.log(error);
-                            alert('인증번호 전송에 실패했습니다.');
-                        }
-                    });
-                }
-
-                function verifyCode() {
-                    var phoneNumber = document.getElementById('tel').value;
-                    var verificationCode = document.getElementById('verificationCode').value;
-
-                    // CSRF 토큰 가져오기 (만약 Spring Security를 사용하고 있다면)
-                    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-                    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-                    $.ajax({
-                        url: '/verification/verifyCode',
-                        type: 'POST',
-                        data: {
-                            phoneNumber: phoneNumber,
-                            verificationCode: verificationCode
-                        },
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(csrfHeader, csrfToken);
-                        },
-                        success: function(response) {
-                            document.getElementById('verificationMessage').innerText = response; // 서버에서 오는 메시지 ("확인되셨습니다." 또는 "올바른 인증번호를 입력 해 주세요.")
-                        },
-                        error: function(error) {
-                            console.log(error);
-                            alert('인증번호 확인에 실패했습니다.');
-                        }
-                    });
-                }
             </script>
         </th:block>
     </div>
@@ -193,16 +130,13 @@
             <input type="text" id="postcode" th:field="*{postcode}" placeholder="" readonly="readonly">
             <input type="button" onclick="daumPost()" value="우편번호 찾기">
             <input type="text" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소 입력">
-            <input type="text" id="address" th:field="*{address}"><br>
+            <input type="text" id="address" th:field="*{address}" readonly="readonly"><br>
         </div>
         <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError"></p>
         <div class="form-group">
             <label th:for="tel">전화번호</label>
             <input id="tel" placeholder="010 1234 1234" th:field="*{tel}" type="text">
             <!-------------------------------전화 인증----------------------------------------->
-            <button id="col" onclick="sendVerificationCode()" type="button">인증번호 발송</button>
-            <input id="verificationCode" placeholder="인증번호 입력" type="text">
-            <button id="colcol" onclick="verifyCode()" type="button">인증 번호 확인</button>
             <p id="verificationMessage"></p>
         </div>
 
