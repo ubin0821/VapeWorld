@@ -33,12 +33,18 @@ public class MemberController {
     @GetMapping(value = "/login/error")
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg","아이디 또는 비밀번호를 확인해주세요!");
-        return "member/memberLoginForm";
+        return "members/memberLoginForm";
     }
+    @GetMapping(value = "/consent")
+    public String consent() {
+        return "member/consent";
+    }
+
+
     @GetMapping(value = "/new")
     public String memberForm(Model model) {
         model.addAttribute("memberFormDto",new MemberFormDto());
-        return "member/memberForm";
+        return "members/memberForm";
     }
     @PostMapping(value = "/new")
     public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult,
@@ -46,7 +52,7 @@ public class MemberController {
         // @Valid 붙은 객체를 검사해서 결과에 에러가 있으면 실행
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult);
-            return "member/memberForm";//다시 회원가입으로 돌려보닙니다.
+            return "members/memberForm";//다시 회원가입으로 돌려보닙니다.
         }
         try{
             //Member 객체 생성
@@ -56,9 +62,9 @@ public class MemberController {
         }
         catch (IllegalStateException e){
             model.addAttribute("errorMessage",e.getMessage());
-            return "member/memberForm";
+            return "members/memberForm";
         }
-        return "member/anno";
+        return "members/anno";
     }
     @PostMapping("/{email}/emailConfirm")
     public @ResponseBody ResponseEntity emailConfrim(@PathVariable("email") String email)

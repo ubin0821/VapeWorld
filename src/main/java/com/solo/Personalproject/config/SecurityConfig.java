@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //로그인에 관여
         http.authorizeRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error","/consent").permitAll()
 
                 .requestMatchers("/", "/members/**").permitAll()
 

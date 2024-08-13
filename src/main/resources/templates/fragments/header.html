@@ -1,254 +1,194 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header">
-
     <head>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-                            .aa {
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                                display: flex;
-                                height: 80px;
-                                background-color: #ffffff;
-                                 margin-top: 30px;
-                            }
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                font-family: 'Arial', sans-serif;
+                background-color: #f4f4f4;
+            }
+            ul, ol {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            #navibar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                height: 60px;
+                background-color: #333;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 0 20px; /* 여백 조정 */
+                box-sizing: border-box;
+            }
+            #navibar>ul {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                justify-content: space-around;
+                align-items: center;
+            }
+            #navibar>ul>li {
+                position: relative;
+                text-align: center;
+                flex: 1;
+            }
+            #navibar a {
+                display: block;
+                color: #fff;
+                text-decoration: none;
+                font-size: 16px;
+                padding: 20px 0;
+                transition: all .3s ease;
+            }
+            #navibar>ul>li:hover>a {
+                color: #ff9900; /* hover시 텍스트 색상 변경 */
+            }
+            .sbox {
+                position: absolute;
+                left: 0;
+                top: 100%;
+                width: 100%;
+                background-color: #444;
+                overflow: hidden;
+                max-height: 0;
+                transition: max-height .6s ease-out;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+            li:hover .sbox {
+                max-height: 500px; /* 하위 메뉴의 전체 높이보다 조금 더 큰 값 */
+            }
+            .smenu {
+                padding: 10px 0;
+            }
+            .smenu li {
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: opacity .3s ease, transform .3s ease;
+            }
+            li:hover .smenu li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* smenu 항목 순차적 애니메이션 */
+            .smenu li:nth-child(1) { transition-delay: .1s; }
+            .smenu li:nth-child(2) { transition-delay: .2s; }
+            .smenu li:nth-child(3) { transition-delay: .3s; }
+            .smenu li:nth-child(4) { transition-delay: .4s; }
+            .smenu li:nth-child(5) { transition-delay: .5s; }
+            .smenu li:nth-child(6) { transition-delay: .6s; }
+            .smenu li a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+                transition: background-color .3s ease;
+            }
+            .smenu li a:hover {
+                background-color: #ff9900;
+            }
 
-                               .bb {
-                                display: flex;
-                                height: 80px;
-                                background-color: #ffffff;
-                                border-bottom: 1px solid #cccccc;
-                                margin-top: 10px;
-                            }
-
-                            .dropdown {
-
-
-                  display: absolute;
-                  top:45px;
-                               left:1037px;
-                            }
-
-
-                            .nav { /* 로그인 */
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-
-                            color: #0b5394;
-                                list-style-type: none;
-                             margin-top: -42px;
-                               margin-left: 1633px;
-                            }
-
-                            .logo {
-                                margin-left: 300px;
-                                margin-top: 5px;
-                            }
-                             .nav2 {/* 모든 메뉴 */
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                                display: flex;
-                                list-style-type: none;
-                                margin-top: 30px;
-                                 margin-left: 270px;
-                            }
-                            .nav2 img{/* 모든 메뉴 */
-                            margin-top: -6px; /* 이미지 위 아래 위치*/
-
-                             margin-right: -15px;
-                             margin-left: 8px;}
-
-                              .nav3 { /* 국내 여행 */
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                                display: flex;
-                                list-style-type: none;
-                                margin-top: 30px;
-                               margin-left: -30px;
-                            }
-                             .nav3 img{ /* 국내 여행 */
-                            margin-top: -20px; /* 이미지 위 아래 위치*/
-
-                             margin-right: -22px;
-                             margin-left: 9px;}
-
-
-                  .nav4 { /* 해외 여행 */
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                  display: flex;
-                                list-style-type: none;
-                                margin-top: 30px;
-                               margin-left: -30px;
-                  }
-                  .nav4 img{ /* 해외 여행 */
-                   margin-top: -15px;/* 이미지 위 아래 위치*/
-
-                             margin-right: -15px;
-                             margin-left: 15px;}
-                  }
-
-                              .nav5{
-   font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                               display: flex;
-                                list-style-type: none;
-                                margin-top: 100px;
-                               margin-left: 10px;
-                              }
-
-                  .nav5 img{
-                   margin-top: 20px;/* 이미지 위 아래 위치*/
-                             margin-right: -30px;
-                             margin-left: -17px;}
-                  .nav6{
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                   display: flex;
-                                list-style-type: none;
-                                 margin-top: 30px;
-                               margin-left: 4px;
-                              }
-
-                              .nav7{
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                               display: flex;
-                                list-style-type: none;
-                                margin-top: 30px;
-                               margin-left: 6px;
-                              }
-                              .nav8{ /* 반갑습니다 */
-                                  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                               display: flex;
-                                list-style-type: none;
-                                margin-top: 20px;
-                               margin-left: 190px;
-                              }
-                          .nav9{ /* 로그아웃 */
-                              font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                               color: #0b5394;
-                                list-style-type: none;
-                                margin-top: -44px;
-                               margin-left: -100px;
-                              }
-
-                               .nav10{
-                                   font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-                               display: flex;
-                                list-style-type: none;
-                                margin-top: 30px;
-                               margin-left: 4px;
-                              }
-
-
-
-
+            .logo img{
+                height: 50px; /* 로고 크기 조정 */
+                margin-right: 20px; /* 로고와 메뉴 사이 간격 */
+            }
         </style>
     </head>
     <body>
-
-    <div class="aa">
-        <a class="logo" href="/">
-            <img th:src="@{/css/images/logo.png}" height="80">
-        </a>
-
-
-        <div class="dropdown">
-            <button class="btn btn-link dropdown-toggle nav-link px-2" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                마이페이지
-            </button>
-
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/orders">예약 내역</a></li>
-                <li><a class="dropdown-item" href="/cart">찜 내역</a></li>
-                <li><a class="dropdown-item" href="/userQuestion">1:1문의</a></li>
-                <li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
-            </ul>
+    <nav id="navibar">
+        <!-- 로고 섹션 -->
+        <div class="logo">
+            <a href="/">
+                <img th:src="@{/css/images/logo.png}" alt="logo">
+            </a>
         </div>
 
-    </div>
-    <ul class="nav" sec:authorize="isAnonymous()">
-        <li><a href="/members/login" class="nav-link">로그인</a></li>
-    </ul>
-
-
-    <!-- 이동된 부분 -->
-    <div class="bb">
-    <ul class="nav2">
-        <li><img th:src="@{/css/images/allmenu.png}" height="37"></li>
-        <li><a href="#" class="nav-link px-2 link-secondary">모든메뉴</a></li>
-    </ul>
-
-        <ul class="nav3">
-        <li><img th:src="@{/css/images/korea.png}" height="70"></li>
-        <li><a href="/domestic" class="nav-link px-2 link-secondary">국내 여행</a></li>
-    </ul>
-
-        <ul class="nav4">
-        <li><img th:src="@{/css/images/travel.png}" height="60"></li>
-        <li><a href="/overseas" class="nav-link px-2 link-secondary">해외 여행</a></li>
-    </ul>
-        <ul class="nav5">
-            <img th:src="@{/css/images/menuline.png}" height="50"></svg>
+        <!-- 네비게이션 메뉴 -->
+        <ul>
+            <li>
+                <a href="#">입호흡 액상</a>
+                <div class="sbox s1">
+                    <ol class="smenu">
+                        <li><a href="#">과일 액상</a></li>
+                        <li><a href="#">맨솔 액상</a></li>
+                        <li><a href="#">디저트 액상</a></li>
+                        <li><a href="#">음료 액상</a></li>
+                        <li><a href="#">연초 액상</a></li>
+                    </ol>
+                </div>
+            </li>
+            <li>
+                <a href="#">폐호흡 액상</a>
+                <div class="sbox s2">
+                    <ol class="smenu">
+                        <li><a href="#">과일 액상</a></li>
+                        <li><a href="#">맨솔 액상</a></li>
+                        <li><a href="#">디저트 액상</a></li>
+                        <li><a href="#">음료 액상</a></li>
+                        <li><a href="#">연초 액상</a></li>
+                    </ol>
+                </div>
+            </li>
+            <li>
+                <a href="#">일회용 전자담배</a>
+                <div class="sbox s3">
+                    <ol class="smenu">
+                        <li><a href="#">퍼프 솔트</a></li>
+                        <li><a href="#">네스티 픽스고</a></li>
+                        <li><a href="#">오르카 에어</a></li>
+                    </ol>
+                </div>
+            </li>
+            <li>
+                <a href="#">입호흡 기기</a>
+                <div class="sbox s5">
+                    <ol class="smenu">
+                        <li><a href="#">발라리안</a></li>
+                        <li><a href="#">부푸</a></li>
+                        <li><a href="#">긱베이프</a></li>
+                        <li><a href="#">베이포레소</a></li>
+                        <li><a href="#">아스파이어</a></li>
+                        <li><a href="#">한야</a></li>
+                    </ol>
+                </div>
+            </li>
+            <li>
+                <a href="#">폐호흡 기기</a>
+                <div class="sbox s6">
+                    <ol class="smenu">
+                        <li><a href="#">모드</a></li>
+                        <li><a href="#">키트</a></li>
+                        <li><a href="#">팟다이비스</a></li>
+                        <li><a href="#">부푸</a></li>
+                        <li><a href="#">긱베이프</a></li>
+                        <li><a href="#">베이포레소</a></li>
+                    </ol>
+                </div>
+            </li>
+            <li>
+                <a href="#">소모품</a>
+                <div class="sbox s7">
+                    <ol class="smenu">
+                        <li><a href="#">팟</a></li>
+                        <li><a href="#">코일</a></li>
+                        <li><a href="#">탱크</a></li>
+                        <li><a href="#">카토마이저</a></li>
+                        <li><a href="#">배터리</a></li>
+                        <li><a href="#">액세서리</a></li>
+                    </ol>
+                </div>
+            </li>
         </ul>
-
-        <ul class="nav6">
-            <li><a href="#" class="nav-link px-2 link-secondary">이벤트</a></li>
-        </ul>
-
-        <ul class="nav10">
-            <li><a href="/qna" class="nav-link px-2 link-secondary">Q&A</a></li>
-        </ul>
-
-        <ul class="nav10">
-            <li><a href="/api/list" class="nav-link px-2 link-secondary">환율 계산</a></li>
-        </ul>
-
-
-        <ul class="nav7">
-             <li><a href="/admin/item/new" class="nav-link px-2 link-secondary">패키지 작성</a></li>
-             <li><a href="#" class="nav-link px-2 link-secondary">공지사항 작성</a></li>
-         </ul>
-
-
-
-
-
-         <ul class="nav9" sec:authorize = "isAuthenticated()">
-             <a class="nav-link" href="/members/logout">로그아웃</a>
-         </ul>
-
-
-    </div>
+    </nav>
     </body>
 </header>
 </html>
