@@ -28,7 +28,7 @@ public class MemberController {
 
     @GetMapping(value = "/login")
     public String loginMember() {
-        return "member/memberLoginForm";
+        return "members/memberLoginForm";
     }
     @GetMapping(value = "/login/error")
     public String loginError(Model model){
@@ -37,7 +37,7 @@ public class MemberController {
     }
     @GetMapping(value = "/consent")
     public String consent() {
-        return "member/consent";
+        return "members/consent";
     }
 
 

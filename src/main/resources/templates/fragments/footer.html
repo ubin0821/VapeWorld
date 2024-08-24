@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="layout1.css">
+</head>
+<body>
 <div class="footer" th:fragment="footer">
+    <div class="customer-center">
+        <h5>CUSTOMER CENTER</h5>
+        <p><strong>010-8191-2221</strong></p>
+        <p>- 평일 : 10:00 ~ 17:00 (점심시간 12:00 ~ 13:00)</p>
+        <p>- 토요일, 일요일, 공휴일 휴무</p>
+        <p>※ 통화량이 많을때는 문의 게시판으로 문의주세요.</p>
+    </div>
 
-    <footer class="page-footer font-small cyan darken-3">
-        <div class="footer-copyright text-center py-3">
-            푸터입니다
-        </div>
-    </footer>
+    <div class="bank-info">
+        <h5>BANK INFO</h5>
+        <p>농협 :351-1234-5678-00 </p>
+        <p>국민 :123456-78-910234 </p>
+        <p>예금주 :박유빈 </p>
+        <p><strong>반품주소지</strong></p>
+        <p>인천광역시 부평구 경원대로 1366 7층 더조은컴퓨터아카데미</p>
+        <p>자세한 교환 및 반품절차는 공지사항을 참고해주시기 바랍니다.</p>
+    </div>
 
+    <div class="notice-links">
+        <a href="#">공지사항</a>
+        <a href="#">상품후기</a>
+        <a href="#">상품문의</a>
+    </div>
 </div>
+</body>
 </html>

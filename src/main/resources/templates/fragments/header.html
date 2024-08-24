@@ -10,7 +10,7 @@
                 width: 100%;
                 height: 100%;
                 font-family: 'Arial', sans-serif;
-                background-color: #f4f4f4;
+                background-color: #ffffff; /* 배경색: 흰색 */
             }
             ul, ol {
                 margin: 0;
@@ -22,85 +22,126 @@
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
-                height: 60px;
-                background-color: #333;
+                height: 70px;
+                background-color: #ffffff; /* 네비게이션 배경색: 흰색 */
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                padding: 0 20px; /* 여백 조정 */
+                padding: 0 20px;
                 box-sizing: border-box;
+                color: #000; /* 텍스트 색상: 검정색 */
             }
-            #navibar>ul {
-                display: flex;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                justify-content: space-around;
-                align-items: center;
+            #navibar .logo {
+                margin-right: 0; /* 로고와 메뉴 사이 간격 */
             }
-            #navibar>ul>li {
-                position: relative;
-                text-align: center;
-                flex: 1;
-            }
-            #navibar a {
-                display: block;
-                color: #fff;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 20px 0;
-                transition: all .3s ease;
-            }
-            #navibar>ul>li:hover>a {
-                color: #ff9900; /* hover시 텍스트 색상 변경 */
-            }
-            .sbox {
-                position: absolute;
-                left: 0;
-                top: 100%;
-                width: 100%;
-                background-color: #444;
-                overflow: hidden;
-                max-height: 0;
-                transition: max-height .6s ease-out;
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-                z-index: 1;
-            }
-            li:hover .sbox {
-                max-height: 500px; /* 하위 메뉴의 전체 높이보다 조금 더 큰 값 */
-            }
-            .smenu {
-                padding: 10px 0;
-            }
-            .smenu li {
-                opacity: 0;
-                transform: translateY(-20px);
-                transition: opacity .3s ease, transform .3s ease;
-            }
-            li:hover .smenu li {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            /* smenu 항목 순차적 애니메이션 */
-            .smenu li:nth-child(1) { transition-delay: .1s; }
-            .smenu li:nth-child(2) { transition-delay: .2s; }
-            .smenu li:nth-child(3) { transition-delay: .3s; }
-            .smenu li:nth-child(4) { transition-delay: .4s; }
-            .smenu li:nth-child(5) { transition-delay: .5s; }
-            .smenu li:nth-child(6) { transition-delay: .6s; }
-            .smenu li a {
-                color: #fff;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
-                transition: background-color .3s ease;
-            }
-            .smenu li a:hover {
-                background-color: #ff9900;
-            }
+           #navibar .logo img {
+    height: 180px; /* 로고 크기 조정 */
+    margin-left: -10px; /* 로고와 메뉴 사이 간격 조정 */
+}
 
-            .logo img{
-                height: 50px; /* 로고 크기 조정 */
-                margin-right: 20px; /* 로고와 메뉴 사이 간격 */
-            }
+ #navibar>ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-around; /* 메뉴 항목 사이에 균등한 간격 추가 */
+    flex-wrap: nowrap; /* 메뉴가 한 줄에 고정되도록 설정 */
+}
+
+#navibar>ul>li {
+    position: relative;
+    text-align: center;
+}
+
+#navibar a {
+    display: block;
+    color: #000000; /* 링크 텍스트 색상: 검정색 */
+    text-decoration: none;
+    font-size: 16px; /* 글씨 크기 조정 */
+    padding: 10px 0; /* 패딩 조정 */
+    transition: color .3s ease, background-color .3s ease;
+}
+
+#navibar>ul>li:hover>a {
+    color: #007bff; /* hover 시 텍스트 색상: 파란색 */
+    background-color: #f1f1f1; /* hover 시 배경색: 연한 회색 */
+    border-radius: 5px; /* hover 시 모서리 둥글게 */
+}
+
+.sbox {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* 서브메뉴를 부모 메뉴 중앙에 정렬 */
+    top: 100%;
+    width: 200px; /* 서브메뉴 너비 조정 */
+    background-color: #ffffff; /* 서브메뉴 배경색: 흰색 */
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .6s ease-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+}
+
+li:hover .sbox {
+    max-height: 500px; /* 하위 메뉴의 전체 높이보다 조금 더 큰 값 */
+}
+
+.smenu {
+    padding: 10px 0;
+}
+
+.smenu li {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity .3s ease, transform .3s ease;
+}
+
+li:hover .smenu li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* smenu 항목 순차적 애니메이션 */
+.smenu li:nth-child(1) { transition-delay: .1s; }
+.smenu li:nth-child(2) { transition-delay: .2s; }
+.smenu li:nth-child(3) { transition-delay: .3s; }
+.smenu li:nth-child(4) { transition-delay: .4s; }
+.smenu li:nth-child(5) { transition-delay: .5s; }
+.smenu li:nth-child(6) { transition-delay: .6s; }
+
+.smenu li a {
+    color: #000000; /* 기본 텍스트 색상: 검정색 */
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: background-color .3s ease, color .3s ease;
+}
+
+.smenu li a:hover {
+    background-color: #f8f9fa; /* hover 시 배경색: 연한 회색 */
+    color: #007bff; /* hover 시 텍스트 색상: 파란색 */
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.auth-links a {
+    margin-left: 10px; /* 간격 조정 */
+    font-size: 14px; /* 글씨 크기 줄임 */
+    color: #000000;
+    text-decoration: none;
+    transition: color .3s ease;
+    padding: 5px 10px; /* 패딩 조정 */
+}
+
+.auth-links a:hover {
+    color: #007bff; /* hover 시 텍스트 색상: 파란색 */
+}
+
+
         </style>
     </head>
     <body>
@@ -114,6 +155,11 @@
 
         <!-- 네비게이션 메뉴 -->
         <ul>
+
+
+            <!-- ADMIN 권한을 가진 사용자만 표시 -->
+
+
             <li>
                 <a href="#">입호흡 액상</a>
                 <div class="sbox s1">
@@ -156,7 +202,6 @@
                         <li><a href="#">부푸</a></li>
                         <li><a href="#">긱베이프</a></li>
                         <li><a href="#">베이포레소</a></li>
-                        <li><a href="#">아스파이어</a></li>
                         <li><a href="#">한야</a></li>
                     </ol>
                 </div>
@@ -165,12 +210,11 @@
                 <a href="#">폐호흡 기기</a>
                 <div class="sbox s6">
                     <ol class="smenu">
-                        <li><a href="#">모드</a></li>
-                        <li><a href="#">키트</a></li>
-                        <li><a href="#">팟다이비스</a></li>
-                        <li><a href="#">부푸</a></li>
-                        <li><a href="#">긱베이프</a></li>
-                        <li><a href="#">베이포레소</a></li>
+                        <li><a href="#">닷모드</a></li>
+                        <li><a href="#">베이프루션</a></li>
+                        <li><a href="#">도포</a></li>
+                        <li><a href="#">아스파이어</a></li>
+                        <li><a href="#">린코</a></li>
                     </ol>
                 </div>
             </li>
@@ -187,7 +231,31 @@
                     </ol>
                 </div>
             </li>
+
         </ul>
+
+
+
+        <!-- 로그인/회원가입 또는 로그아웃 링크 -->
+        <div class="auth-links">
+            <a href="/cart">장바구니</a>
+            <a href="/orders">구매이력</a>
+            <a th:href="@{/members/login}"
+               th:if="${#authorization.expression('isAnonymous()')}"
+               class="auth-button">로그인</a>
+
+            <a th:href="@{/members/consent}"
+               th:if="${#authorization.expression('isAnonymous()')}"
+               class="auth-button">회원가입</a>
+
+            <a th:href="@{/members/logout}"
+               th:if="${#authorization.expression('isAuthenticated()')}"
+               class="auth-button">로그아웃</a>
+            <a th:href="@{/admin/item/new}"
+               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 등록</a>
+            <a th:href="@{/admin/items}"
+               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a>
+        </div>
     </nav>
     </body>
 </header>

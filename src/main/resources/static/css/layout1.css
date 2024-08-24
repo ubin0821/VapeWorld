@@ -1,35 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-html{
- font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-    position: relative;
-    min-height: 100%;
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 페이지 높이를 뷰포트 높이로 설정 */
 
-.footer {
- font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 15px 0;
-    text-align: center;
 }
-.content{
- font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-    margin-bottom: 100px;
+
+.content {
+    flex: 1; /* 콘텐츠가 페이지의 남은 공간을 채우도록 설정 */
     margin-top: 50px;
     margin-left: 200px;
     margin-right: 200px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* 중앙 정렬 */
+    width: 100%;
+    height: 280px; /* 푸터의 높이 설정 */
+    padding: 15px 0;
+    text-align: center;
+    font-size: 12px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+    font-family: "Noto Sans KR", sans-serif;
+    margin-top: auto; /* footer가 페이지 하단에 위치하게 만듭니다 */
+}
+
+.footer div {
+    flex: 1;
+    padding: 5px;
+    position: relative; /* Ensure divs inside footer respect their parent */
+}
+
+.footer div:not(:last-child)::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 1px;
+    background-color: #e0e0e0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.notice-links {
+    display: flex;
+    gap: 15px;
+    margin-bottom:220px;
+}
+
+.notice-links a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.notice-links a:hover {
+    color: #333;
+    text-decoration: none;
 }
