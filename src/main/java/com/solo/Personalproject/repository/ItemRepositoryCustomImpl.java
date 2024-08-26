@@ -32,7 +32,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        // QueryDSL을 사용하여 아이템을 조회합니다. 시간 관련 조건은 제거하였습니다.
         QueryResults<Item> results = queryFactory
                 .selectFrom(QItem.item)
                 .where(searchSellStatusEq(itemSearchDto.getSearchSellStatus())) // 판매 상태만 필터링

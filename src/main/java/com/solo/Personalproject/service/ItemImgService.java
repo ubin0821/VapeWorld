@@ -27,9 +27,7 @@ public class ItemImgService {
         System.out.println(oriImgName);
         //파일 업로드
         if (!StringUtils.isEmpty(oriImgName)){ // oriImgName 문자열로 비어 있지 않으면 실행
-            System.out.println("******");
             imgName = fileService.uploadFile(itemImgLocation,oriImgName,itemImgFile.getBytes());
-            System.out.println(imgName);
             imgUrl = "/images/item/"+imgName;
         }
         System.out.println("1111");
@@ -38,7 +36,6 @@ public class ItemImgService {
         // imgName : 실제 로컬에 저장된 상품 이미지 파일의 이름
         // imgUrl : 로컬에 저장된 상품 이미지 파일을 불러오는 경로
         itemImg.updateItemImg(oriImgName,imgName,imgUrl);
-        System.out.println("(((((");
         itemImgRepository.save(itemImg);
     }
 
