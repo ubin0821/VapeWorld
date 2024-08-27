@@ -42,6 +42,7 @@
                 <td>상품아이디</td>
                 <td>상품명</td>
                 <td>상태</td>
+                <td>종류</td>
             </tr>
             </thead>
             <tbody>
@@ -51,6 +52,8 @@
                     <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}"></a>
                 </td>
                 <td th:text="${item.itemSellStatus == T(com.solo.Personalproject.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                <td th:text="${item.category == T(com.solo.Personalproject.constant.Category).LIQUID_PHASE ? '액상'
+             : (item.category == T(com.solo.Personalproject.constant.Category).MACHINE ? '기기' : '소모품')}"></td>
             </tr>
             </tbody>
         </table>

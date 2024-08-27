@@ -1,6 +1,8 @@
 package com.solo.Personalproject.dto;
 
+import com.solo.Personalproject.constant.Category;
 import com.solo.Personalproject.constant.ItemSellStatus;
+import com.solo.Personalproject.constant.Kind;
 import com.solo.Personalproject.entity.Item;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +31,10 @@ public class ItemFormDto {
     private Integer stockNumber;
 
     private ItemSellStatus itemSellStatus;
+
+    private Category category;
+
+    private Kind kind;
 
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); // 상품 이미지 정보
 

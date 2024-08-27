@@ -24,13 +24,11 @@ public class ItemImgService {
         String oriImgName = itemImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
-        System.out.println(oriImgName);
         //파일 업로드
         if (!StringUtils.isEmpty(oriImgName)){ // oriImgName 문자열로 비어 있지 않으면 실행
             imgName = fileService.uploadFile(itemImgLocation,oriImgName,itemImgFile.getBytes());
             imgUrl = "/images/item/"+imgName;
         }
-        System.out.println("1111");
         //상품 이미지 정보 저장
         // oriImgName : 상품 이미지 파일의 원래 이름
         // imgName : 실제 로컬에 저장된 상품 이미지 파일의 이름

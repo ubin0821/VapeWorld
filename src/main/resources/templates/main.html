@@ -5,6 +5,51 @@
 <head>
     <meta charset="UTF-8">
     <title>VapeWorld</title>
+    <style>
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .card-body {
+            opacity: 0; /* 기본적으로 숨김 */
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6); /* 상품 전체에 반투명 검정색 오버레이 */
+            color: white;
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center; /* 세로 중앙 정렬 */
+            flex-direction: column; /* 텍스트를 세로로 정렬 */
+            text-align: center;
+        }
+
+        .card:hover .card-body {
+            opacity: 1; /* 마우스 올리면 보이도록 */
+        }
+
+        .card-body h4, .card-body h3 {
+            margin: 0;
+        }
+
+        .card-body h4 {
+            font-size: 1.2rem; /* 상품명 폰트 크기 조정 */
+        }
+
+        .card-body h3 {
+            font-size: 1.5rem; /* 가격 폰트 크기 조정 */
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -14,11 +59,10 @@
                 <div class="col">
                     <div class="card">
                         <a th:href="'/item/'+${item.id}" class="text-dark">
-                            <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}"
-                                 height="400">
+                            <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
                             <div class="card-body">
                                 <h4 class="card-title">[[${item.itemNm}]]</h4>
-                                <h3 class="card-title text-danger" >[[${item.price}]]원</h3>
+                                <h3 class="card-title text-danger">[[${item.price}]]원</h3>
                             </div>
                         </a>
                     </div>
@@ -26,6 +70,8 @@
             </th:block>
         </div>
     </div>
+    <br>
+    <br>
     <div th:with="start=${(items.number/maxPage)*maxPage +1},
          end=(${(items.totalPages == 0) ? 1 :(start + (maxPage-1) < items.totalPages ?
          start + (maxPage -1) : items.totalPages)})">

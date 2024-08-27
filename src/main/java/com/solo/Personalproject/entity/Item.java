@@ -1,6 +1,8 @@
 package com.solo.Personalproject.entity;
 
+import com.solo.Personalproject.constant.Category;
 import com.solo.Personalproject.constant.ItemSellStatus;
+import com.solo.Personalproject.constant.Kind;
 import com.solo.Personalproject.dto.ItemFormDto;
 import com.solo.Personalproject.exception.OutOfStockException;
 import jakarta.persistence.*;
@@ -38,6 +40,12 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품판매 상태
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private Kind kind;
+
      //   private LocalDateTime regTime; // 등록 시간
 
       // private LocalDateTime updateTime; // 수정 시간
@@ -56,6 +64,8 @@ public class Item extends BaseEntity {
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+        this.category = itemFormDto.getCategory();
+        this.kind = itemFormDto.getKind();
     }
 
     public void removeStock(int stockNumber) {
