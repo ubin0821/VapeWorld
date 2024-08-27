@@ -163,37 +163,143 @@
 
 <th:block layout:fragment="css">
     <style>
-        .mgb-15 {
-              margin-bottom: 15px;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
 
-        .mgt-30 {
-              margin-top: 30px;
-        }
-
-        .mgt-50 {
-              margin-top: 50px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .repImgDiv {
-              margin-right: 150px;
-              height: auto;
-              width: 50%;
+            margin-right: 30px;
+            height: auto;
+            width: 100%;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .repImg {
-              width: 100%;
-              height: 400px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .repImg:hover {
+            transform: scale(1.05);
         }
 
         .wd50 {
-              height: auto;
-              width: 50%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .price-text {
-              color: black;
+            color: #e63946;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
+
+        .input-group {
+            margin-top: 15px;
+        }
+
+        .input-group-text {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+        }
+
+        .input-group .form-control {
+            border: 1px solid #ced4da;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+            padding: 0.4em 0.7em;
+            border-radius: 5px;
+        }
+
+        .badge.bg-primary {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            transform: translateY(-2px);
+        }
+
+        .btn-light {
+            background-color: #ffffff;
+            border-color: #ced4da;
+            color: #343a40;
+        }
+
+        .btn-light:hover {
+            background-color: #e2e6ea;
+            border-color: #dae0e5;
+            transform: translateY(-2px);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        h4, h5 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border-top: 1px solid #dee2e6;
+            margin: 1.5rem 0;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: #6c757d;
+        }
+
+        .text-center img {
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .text-center img:hover {
+            transform: scale(1.03);
+        }
+    </style>
     </style>
 </th:block>
 

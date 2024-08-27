@@ -5,9 +5,9 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             var errorMessage = [[${errorMessage}]];
-            if(errorMessage != null){
+            if (errorMessage != null) {
                 alert(errorMessage);
             }
             bindDomEvent();
@@ -16,15 +16,19 @@
             $('#categorySelect').change(function() {
                 updateCategoryOptions(); // 카테고리 변경 시 옵션 업데이트
             });
+
+            $('#kindSelect').change(function() {
+                updateTypeOptions(); // 종류 변경 시 타입 옵션 업데이트
+            });
         });
 
-        function bindDomEvent(){
-            $(".imageFile.form-control").on("change",function(){
+        function bindDomEvent() {
+            $(".imageFile.form-control").on("change", function() {
                 var fileName = $(this).val().split("\\").pop();
-                var fileExt = fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
+                var fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 
-                if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif"
-                    && fileExt != "png" && fileExt != "bmp"){
+                if (fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" &&
+                    fileExt != "png" && fileExt != "bmp") {
                     alert("이미지 파일만 등록이 가능합니다.");
                     $(this).val("");
                 }
@@ -32,31 +36,67 @@
         }
 
         function updateCategoryOptions() {
-            var category = $('#categorySelect').val(); // 선택된 카테고리 값 가져오기
-            var kindSelect = $('#kindSelect'); // 종류 선택 요소
+            var category = $('#categorySelect').val();
+            var kindSelect = $('#kindSelect');
+            var typeContainer = $('#typeContainer');
+            var typeSelect = $('#typeSelect');
 
             kindSelect.empty(); // 기존 옵션 제거
+            typeSelect.empty(); // 타입 옵션도 초기화
+            typeContainer.hide(); // 타입 선택은 기본적으로 숨김
 
-            // 액상일 경우
             if (category === 'LIQUID_PHASE') {
                 kindSelect.append('<option value="M_BREATHE">입호흡 액상</option>');
                 kindSelect.append('<option value="P_BREATHE">폐호흡 액상</option>');
-            }
-
-            // 기기일 경우
-            else if (category === 'MACHINE') {
-                kindSelect.append('<option value="M_BREATHE">입호흡 기기</option>');
-                kindSelect.append('<option value="P_BREATHE">폐호흡 기기</option>');
+                typeContainer.show(); // 액상 선택 시 타입 선택을 표시
+                updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
+            } else if (category === 'MACHINE') {
+                kindSelect.append('<option value="M_MACHINE">입호흡 기기</option>');
+                kindSelect.append('<option value="P_MACHINE">폐호흡 기기</option>');
                 kindSelect.append('<option value="O_MACHINE">일회용 전자담배</option>');
-            }
-
-            // 소모품일 경우
-            else if (category === 'CONSUMABLES') {
+                typeContainer.show(); // 기기 선택 시 타입 선택을 표시
+                updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
+            } else if (category === 'CONSUMABLES') {
                 kindSelect.append('<option value="POT">팟</option>');
                 kindSelect.append('<option value="COIL">코일</option>');
                 kindSelect.append('<option value="TANK">탱크</option>');
                 kindSelect.append('<option value="BATTERY">배터리</option>');
                 kindSelect.append('<option value="ACCESSOIRES">액세서리</option>');
+                typeContainer.hide(); // 소모품 선택 시 타입 선택 숨김
+            }
+        }
+
+        function updateTypeOptions() {
+            var kind = $('#kindSelect').val();
+            var typeSelect = $('#typeSelect');
+
+            typeSelect.empty(); // 기존 타입 옵션 제거
+
+            if (kind === 'M_BREATHE' || kind === 'P_BREATHE') {
+                typeSelect.append('<option value="FRUIT">과일 액상</option>');
+                typeSelect.append('<option value="MENSOLE">맨솔 액상</option>');
+                typeSelect.append('<option value="DESSERT">디저트 액상</option>');
+                typeSelect.append('<option value="BEVERAGE">음료 액상</option>');
+                typeSelect.append('<option value="CIGARETTE">연초 액상</option>');
+            }
+            if (kind === 'M_MACHINE') {
+                typeSelect.append('<option value="VALYRIAN">발라리안</option>');
+                typeSelect.append('<option value="VOOPOO">부푸</option>');
+                typeSelect.append('<option value="GECK_VAPE">긱베이프</option>');
+                typeSelect.append('<option value="VAPORESSO">베이포레소</option>');
+                typeSelect.append('<option value="HANYA">한야</option>');
+            }
+            if (kind === 'P_MACHINE') {
+                typeSelect.append('<option value="DOT_MOD">닷모드</option>');
+                typeSelect.append('<option value="VAPELUSTION">베이프루션</option>');
+                typeSelect.append('<option value="DOPO">도포</option>');
+                typeSelect.append('<option value="ASPIRE">아스파이어</option>');
+                typeSelect.append('<option value="RINCOE">린코</option>');
+            }
+            if (kind === 'O_MACHINE') {
+                typeSelect.append('<option value="PUFF_SALT">퍼프 솔트</option>');
+                typeSelect.append('<option value="NASTY_FIXGO">네스티 픽스고</option>');
+                typeSelect.append('<option value="ORCA_AIR">오르카 에어</option>');
             }
         }
     </script>
@@ -64,14 +104,77 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        .input-group{
-            margin-bottom : 15px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+            padding: 20px;
         }
-        .img-div{
-            margin-bottom : 10px;
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
         }
-        .fieldError{
-            color : #bd2130;
+
+        .h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .form-select, .form-control, .input-group-text, button {
+            border-radius: 4px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .fieldError {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        select.form-select {
+            border: 1px solid #ced4da;
+            padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+            font-size: 1rem;
+        }
+
+        .input-group-prepend .input-group-text {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+        }
+
+        .imageFile.form-control {
+            padding: 0.375rem 0.75rem;
+        }
+
+        .mb3 {
+            margin-bottom: 15px;
         }
     </style>
 </th:block>
@@ -95,6 +198,13 @@
                 <option value="CONSUMABLES">소모품</option>
             </select>
         </div>
+        <div class="row mb-4">
+            <select th:field="*{kind}" id="kindSelect" class="form-select"></select>
+        </div>
+
+        <div class="row mb-4" id="typeContainer" style="display:none;">
+            <select th:field="*{type}" id="typeSelect" class="form-select"></select>
+        </div>
 
         <div class="input-group">
             <div class="input-group-prepend">
@@ -102,7 +212,7 @@
             </div>
             <input type="text" th:field="*{itemNm}" class="form-control" placeholder="상품명을 입력해주세요.">
         </div>
-        <p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemNm}" class="fieldError">Incorrect data</p>
+        <p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemNm}" class="fieldError">상품명이 올바르지 않습니다.</p>
 
         <div class="input-group">
             <div class="input-group-prepend">
@@ -110,21 +220,21 @@
             </div>
             <input type="number" th:field="*{price}" class="form-control" placeholder="상품의 가격을 입력해주세요.">
         </div>
-        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="fieldError">Incorrect data</p>
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="fieldError">가격이 올바르지 않습니다.</p>
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">재고</span>
             </div>
             <input type="number" th:field="*{stockNumber}" class="form-control" placeholder="상품의 재고를 입력해주세요.">
         </div>
-        <p th:if="${#fields.hasErrors('stockNumber')}" th:errors="*{stockNumber}" class="fieldError">Incorrect data</p>
+        <p th:if="${#fields.hasErrors('stockNumber')}" th:errors="*{stockNumber}" class="fieldError">재고 수량이 올바르지 않습니다.</p>
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">상품 상세 내용</span>
             </div>
             <textarea class="form-control" aria-label="With textarea" th:field="*{itemDetail}"></textarea>
         </div>
-        <p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError">Incorrect data</p>
+        <p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError">상품 상세 내용이 올바르지 않습니다.</p>
 
         <div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}">
             <div class="row" th:each="num: ${#numbers.sequence(1,5)}">
@@ -137,8 +247,7 @@
         <div th:if="${not #lists.isEmpty(itemFormDto.itemImgDtoList)}">
             <div class="row" th:each="itemImgDto, status: ${itemFormDto.itemImgDtoList}">
                 <div class="input-group mb3">
-                    <label class="image input-group-text" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ?
-                    ${itemImgDto.oriImgName} : '상품이미지'+${status.index+1}"></label>
+                    <label class="image input-group-text" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ? ${itemImgDto.oriImgName} : '상품이미지'+${status.index+1}"></label>
                     <input type="file" class="imageFile form-control" name="itemImgFile">
                     <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}">
                 </div>

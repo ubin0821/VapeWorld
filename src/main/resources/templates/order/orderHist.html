@@ -50,33 +50,140 @@
 
 <th:block layout:fragment="css">
     <style>
-        .content-mg{
-            margin-left:30%;
-            margin-right:30%;
-            margin-top:2%;
-            margin-bottom:100px;
-        }
-        .repImgDiv{
-            margin-right:15px;
-            margin-left:15px;
-            height:auto;
-        }
-        .repImg{
-            height:100px;
-            width:100px;
-        }
-        .card{
-            width:750px;
-            height:100%;
-            padding:30px;
-            margin-bottom:20px;
-        }
-        .fs18{
-            font-size:18px;
-        }
-        .fs24{
-            font-size:24px;
-        }
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f3f5;
+    margin: 0;
+    padding: 0;
+}
+
+.content-mg {
+    margin: 40px auto;
+    padding: 20px;
+    width: 95%; /* 페이지 너비의 95%를 사용 */
+    max-width: 1400px; /* 최대 너비를 넓혀서 설정 */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-mg h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.repImgDiv {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.card img {
+    max-width: 250px; /* 이미지 크기를 더 크게 설정 */
+    height: auto;
+    border-radius: 6px;
+}
+
+.product-details {
+    flex-grow: 1;
+    padding-left: 30px; /* 이미지와 텍스트 사이의 간격 증가 */
+}
+
+.product-name {
+    font-size: 24px; /* 상품명 폰트 크기 증가 */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-info {
+    display: flex;
+    gap: 40px; /* 가격과 개수 간격 증가 */
+    font-size: 18px;
+    color: #555;
+}
+
+.fs18 {
+    font-size: 18px;
+    color: #495057;
+}
+
+.fs24 {
+    font-size: 24px;
+    color: #212529;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 0.5rem 2rem; /* 버튼 크기 확대 */
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-outline-secondary {
+    color: #343a40;
+    border-color: #dee2e6;
+    background-color: #ffffff;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+    border-color: #dc3545;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.page-item {
+    margin: 0 10px;
+}
+
+.page-link {
+    display: block;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #007bff;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
     </style>
 </th:block>
 
@@ -84,26 +191,27 @@
     <h2 class="mb-4">구매 이력</h2>
     <div th:each="order : ${orders.getContent()}">
         <div class="d-flex mb-3 align-self-center">
-            <h4 th:text="${order.orderDate} + '주문'"></h4>
+            <h4 th:text="${order.orderDate} + ' 주문'"></h4>
             <div class="ml-3">
                 <th:block th:if="${order.orderStatus == T(com.solo.Personalproject.constant.OrderStatus).ORDER}">
                     <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}"
                             onclick="cancelOrder(this.value)">주문취소</button>
                 </th:block>
                 <th:block th:unless="${order.orderStatus == T(com.solo.Personalproject.constant.OrderStatus).ORDER}">
-                    <h4>(취소 완료)</h4></th:block>
+                    <h4>(취소 완료)</h4>
+                </th:block>
             </div>
         </div>
-        <div class="card d-flex">
+        <div class="card">
             <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex mb-3">
                 <div class="repImgDiv">
                     <img th:src="${orderItem.imgUrl}" class="rounded repImg" th:alt="${orderItem.itemNm}">
                 </div>
-                <div class="align-self-center w-75">
-                    <span th:text="${orderItem.itemNm}" class="fs24 font-weight-bold"></span>
-                    <div class="fs18 font-weight-light">
-                        <span th:text="${orderItem.orderPrice} + '원'"></span>
-                        <span th:text="${orderItem.count} + '개'"></span>
+                <div class="product-details">
+                    <span th:text="${orderItem.itemNm}" class="product-name"></span>
+                    <div class="product-info">
+                        <span th:text="${orderItem.orderPrice} + '원'" class="product-price"></span>
+                        <span th:text="${orderItem.count} + '개'" class="product-quantity"></span>
                     </div>
                 </div>
             </div>
@@ -111,8 +219,8 @@
     </div>
 
     <div th:with="start=${(orders.number/maxPage)*maxPage+1},
-        end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage-1) < orders.totalPages ?
-        start + (maxPage - 1) : orders.totalPages)})">
+            end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage-1) < orders.totalPages ?
+            start + (maxPage - 1) : orders.totalPages)})">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${orders.number eq 0}?'disabled' : ''">
                 <a th:href="@{'/orders/'+${orders.number-1}}" aria-label="Previous" class="page-link">

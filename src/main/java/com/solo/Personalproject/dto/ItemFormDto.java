@@ -36,6 +36,8 @@ public class ItemFormDto {
 
     private Kind kind;
 
+    private String type;
+
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); // 상품 이미지 정보
 
     private List<Long> itemImgIds = new ArrayList<>(); // 상품 이미지 아이디

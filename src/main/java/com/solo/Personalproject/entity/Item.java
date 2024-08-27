@@ -46,6 +46,9 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Kind kind;
 
+    @Column(nullable = false)
+    private String type;
+
      //   private LocalDateTime regTime; // 등록 시간
 
       // private LocalDateTime updateTime; // 수정 시간
