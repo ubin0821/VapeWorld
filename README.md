@@ -1,6 +1,7 @@
 # VapeWorld Project
 ### 전자담배 액상/기기 판매 사이트 제작
 ### 2024-08-25 ~ ing
+### 구현 기능
 
 ## 💻 사용된 기술
 <div align=center>
@@ -20,3 +21,4 @@
   <br>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
 </div>
+### 구현 기능
