@@ -25,7 +25,7 @@ public class SecurityConfig {
         //로그인에 관여
         http.authorizeRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error","/consent").permitAll()
-                .requestMatchers("/", "/members/**","/item/**","/images/**","/orders/**").permitAll()
+                .requestMatchers("/", "/members/**","/item/**","/images/**","/orders/**","/payment/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).formLogin(formLogin -> formLogin

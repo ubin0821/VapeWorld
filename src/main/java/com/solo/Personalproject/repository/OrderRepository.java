@@ -16,15 +16,24 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("select count(o) from Order o where o.member.email = :email")
     Long countOrder(@Param("email") String email);
 
-    @Query("select o from Order o" +
-            " left join fetch o.payment p" +
-            " left join fetch o.member m" +
-            " where o.orderUid = :orderUid")
-    Optional<Order> findOrderAndPaymentAndMember(String orderUid);
+
+
+
+
+
+
+    //포트 원
+    @Query("select o from Order o" + //order와
+            " left join fetch o.payment p" + //payment 조인. order를 따른다.
+            " left join fetch o.member m" + //멤버와 조인, order를 따른다.
+            " where o.id = :id") //order에 있는 주문번호 순으로 나열한다.
+    Optional<Order> findOrderAndPaymentAndMember(Long id);
 
     @Query("select o from Order o" +
             " left join fetch o.payment p" +
             " where o.orderUid = :orderUid")
     Optional<Order> findOrderAndPayment(String orderUid);
+
+    Order findByOrderUid(String orderUid);
 
 }

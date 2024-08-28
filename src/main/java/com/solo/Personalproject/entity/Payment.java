@@ -16,10 +16,11 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int price;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-    private String paymentUid; // 결제 고유 번호
+
+    private int price;
+    private String paymentUid;
 
     @Builder
     public Payment(int price, PaymentStatus status) {

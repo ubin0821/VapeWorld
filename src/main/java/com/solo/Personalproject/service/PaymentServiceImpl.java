@@ -4,7 +4,6 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
 import com.solo.Personalproject.dto.PaymentCallbackRequest;
 import com.solo.Personalproject.dto.RequestPayDto;
 import com.solo.Personalproject.entity.Order;
@@ -71,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             // DB에 저장된 결제 금액
-          //  int price = order.getPayment().getPrice();
+            int price = order.getPayment().getPrice();
             // 실 결제 금액
             int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
 

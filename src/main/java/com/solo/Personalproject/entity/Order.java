@@ -1,6 +1,6 @@
 package com.solo.Personalproject.entity;
 
-import com.siot.IamportRestClient.response.Payment;
+
 import com.solo.Personalproject.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class Order extends BaseEntity {
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
@@ -84,11 +84,14 @@ public class Order extends BaseEntity {
         return totalPrice;
     }
 
-    public void cancelOrder(){
+    public void orderCancel(){
         this.orderStatus = OrderStatus.CANCEL;
 
         for (OrderItem orderItem : orderItems){
             orderItem.cancel();
         }
+    }
+    public void  updateOrders(int amount){
+        this.price =amount;
     }
 }

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
-<!--사용자 스크립트 추가-->
-
 <head>
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-
+    <!-- 포트원 결제 모듈 스크립트 추가 -->
+    <script src="https://cdn.iamport.kr/imp-core-v1.0.0.js" defer></script>
 </head>
 
 <th:block layout:fragment="script">
@@ -21,12 +20,12 @@
             var orderTotalPrice = 0;
             $("input[name=cartChkBox]:checked").each(function(){
                 var cartItemId = $(this).val();
-                var price = $("#price_" + cartItemId).attr("data-price");
+                var price = $("#price_" + cartItemId).data("price");
                 var count = $("#count_" + cartItemId).val();
                 orderTotalPrice += price * count;
             });
 
-            $("#orderTotalPrice").html(orderTotalPrice+'원');
+            $("#orderTotalPrice").html(orderTotalPrice + '원');
         }
 
         function changeCount(obj){
@@ -34,15 +33,15 @@
             var cartItemId = obj.id.split('_')[1];
             var price = $("#price_" + cartItemId).data("price");
             var totalPrice = count * price;
-            $("#totalPrice_" + cartItemId).html(totalPrice+"원");
+            $("#totalPrice_" + cartItemId).html(totalPrice + "원");
             getOrderTotalPrice();
             updateCartItemCount(cartItemId, count);
         }
+
         function checkAll(){
             if($("#checkall").prop("checked")){
-                $("input[name=cartChkBox]").prop("checked",true);
-            }
-            else{
+                $("input[name=cartChkBox]").prop("checked", true);
+            } else {
                 $("input[name=cartChkBox]").prop("checked", false);
             }
             getOrderTotalPrice();
@@ -54,27 +53,28 @@
 
             var url = "/cartItem/" + cartItemId + "?count=" + count;
 
-             $.ajax({
-                    url: url,
-                    type: "PATCH",
-                    beforeSend: function (xhr) {
-                          xhr.setRequestHeader(header, token);
-                    },
-                    dataType: "json",
-                    cache: false,
-                    success: function (result, status) {
-                          console.log("cartItem count update success");
-                    },
-                    error : function(jqXHR, status, error){
-                          if(jqXHR.status == '401'){
-                                alert('로그인 후 이용해주세요');
-                                location.href='/members/login';
-                          }else{
-                                alert(jqXHR.responseText);
-                          }
+            $.ajax({
+                url: url,
+                type: "PATCH",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    console.log("cartItem count update success");
+                },
+                error: function(jqXHR, status, error){
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/members/login';
+                    } else {
+                        alert(jqXHR.responseText);
                     }
-              });
+                }
+            });
         }
+
         function deleteCartItem(obj){
             var cartItemId = obj.dataset.id;
             var token = $("meta[name='_csrf']").attr("content");
@@ -82,104 +82,136 @@
 
             var url = "/cartItem/" + cartItemId;
 
-         $.ajax({
-                    url: url,
-                    type: "DELETE",
-                    beforeSend: function (xhr) {
-                          xhr.setRequestHeader(header, token);
-                    },
-                    dataType: "json",
-                    cache: false,
-                    success: function (result, status) {
-                        alert('선택하신 상품이 삭제되었습니다.');
-                          location.href='/cart'; // 다시 본인을 부름 -> 삭제로 인한 화면 변경이 필요하기 때문
-                    },
-                    error : function(jqXHR, status, error){
-                          if(jqXHR.status == '401'){
-                                alert('로그인 후 이용해주세요');
-                                location.href='/members/login';
-                          }else{
-                                alert(jqXHR.responseText);
-                          }
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    alert('선택하신 상품이 삭제되었습니다.');
+                    location.href = '/cart'; // 화면 새로 고침
+                },
+                error: function(jqXHR, status, error){
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/members/login';
+                    } else {
+                        alert(jqXHR.responseText);
                     }
-              });
+                }
+            });
+        }
+
+        function requestPay(orderTotalPrice) {
+            // Check if the IMP object is available
+            if (typeof IMP === 'undefined') {
+                console.error('IMP 객체가 정의되지 않았습니다.');
+                return;
+            }
+
+            IMP.init("imp21870752"); // 본인의 가맹점 식별자 사용
+
+            IMP.request_pay({
+                pg: 'html5_inicis.INIpayTest', // PG사 설정 확인
+                pay_method: 'card',
+                name: '주문 상품', // 실제 상품명을 서버에서 받아와야 합니다.
+                amount: orderTotalPrice, // 결제 금액
+                buyer_email: 'buyer@example.com', // 실제 구매자 이메일 서버에서 받아와야 합니다.
+                buyer_name: '구매자명', // 실제 구매자명 서버에서 받아와야 합니다.
+                buyer_tel: '010-1234-5678', // 임의의 값
+                buyer_addr: '구매자 주소', // 실제 구매자 주소 서버에서 받아와야 합니다.
+                buyer_postcode: '123-456' // 임의의 값
+            }, function(rsp) {
+                if (rsp.success) {
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+
+                    var url = "/cart/orders";
+
+                    var dataList = [];
+                    $("input[name=cartChkBox]:checked").each(function(){
+                        var cartItemId = $(this).val();
+                        var data = { cartItemId: cartItemId };
+                        dataList.push(data);
+                    });
+
+                    var paramData = {
+                        cartOrderDtoList: dataList,
+                        impUid: rsp.imp_uid,
+                        merchantUid: rsp.merchant_uid,
+                        paidAmount: rsp.paid_amount,
+                        applyNum: rsp.apply_num
+                    };
+
+                    var param = JSON.stringify(paramData);
+
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        contentType: "application/json",
+                        data: param,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        dataType: "json",
+                        cache: false,
+                        success: function (result, status) {
+                            alert('주문이 완료되었습니다.');
+                            location.href = '/orders';
+                        },
+                        error: function(jqXHR, status, error){
+                            if(jqXHR.status == '401'){
+                                alert('로그인 후 이용해주세요');
+                                location.href = '/members/login';
+                            } else {
+                                alert(jqXHR.responseText);
+                            }
+                        }
+                    });
+                } else {
+                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
+                }
+            });
         }
 
         function orders(){
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-
-         var url = "/cart/orders";
-
-        var dataList = new Array(); // 배열 생성
-        var paramData = new Object(); // 객체 생성
-
-        //체크된 카트 확인을 위한 함수
-        $("input[name=cartChkBox]:checked").each(function(){
-            var cartItemId = $(this).val(); // 체크된 객체의 값을 cartItemId에 대입
-            var data = new Object(); // 객체 생성
-            data["cartItemId"] = cartItemId; // 객체의 키("cartItemId")에 위에 선언된 cartItemId 변수(value) 대입
-            dataList.push(data); // data 객체를 dataList 배열에 push
-        });
-
-        paramData['cartOrderDtoList'] = dataList;
-            var param = JSON.stringify(paramData);
-
-        $.ajax({
-                    url: url,
-                    type: "POST",
-                    contentType : "application/json",
-                    data : param,
-                    beforeSend: function (xhr) {
-                          xhr.setRequestHeader(header, token);
-                    },
-                    dataType: "json",
-                    cache: false,
-                    success: function (result, status) {
-                        alert('주문이 완료 되었습니다.');
-                          location.href='/orders';
-                    },
-                    error : function(jqXHR, status, error){
-                          if(jqXHR.status == '401'){
-                                alert('로그인 후 이용해주세요');
-                                location.href='/members/login';
-                          }else{
-                                alert(jqXHR.responseText);
-                          }
-                    }
-              });
+            var orderTotalPrice = parseInt($("#orderTotalPrice").text().replace(/[^0-9]/g, ''));
+            requestPay(orderTotalPrice);
         }
     </script>
 </th:block>
 
 <th:block layout:fragment="css">
     <style>
-        .content-mg{
-            margin-left:30%;
-            margin-right:30%;
-            margin-top:2%;
-            margin-bottom:100px;
+        .content-mg {
+            margin-left: 30%;
+            margin-right: 30%;
+            margin-top: 2%;
+            margin-bottom: 100px;
         }
-        .repImgDiv{
-            margin-right:15px;
-            margin-left:15px;
-            height:auto;
+        .repImgDiv {
+            margin-right: 15px;
+            margin-left: 15px;
+            height: auto;
         }
-        .repImg{
-            height:100px;
-            width:100px;
+        .repImg {
+            height: 100px;
+            width: 100px;
         }
-        .card{
-            width:750px;
-            height:100%;
-            padding:30px;
-            margin-bottom:20px;
+        .card {
+            width: 750px;
+            height: 100%;
+            padding: 30px;
+            margin-bottom: 20px;
         }
-        .fs18{
-            font-size:18px;
+        .fs18 {
+            font-size: 18px;
         }
-        .fs24{
-            font-size:24px;
+        .fs24 {
+            font-size: 24px;
         }
     </style>
 </th:block>
@@ -243,6 +275,5 @@
         </div>
     </div>
 </div>
-
 
 </html>
