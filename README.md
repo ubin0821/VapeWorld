@@ -21,4 +21,8 @@
   <br>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
 </div>
-### 구현 기능
+<h2>구현 기능</h2>
+<ul>
+  <li>메인화면</li>
+  <li>로그인 / 회원가입</li>
+</ul>
