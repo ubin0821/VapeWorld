@@ -38,7 +38,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item,orderDto.getCount());
         orderItemList.add(orderItem);
 
-        Order order = Order.creaeOrder(member,orderItemList);
+        Order order = Order.createOrder(member,orderItemList);
         orderRepository.save(order);
         return order.getId();
     }
@@ -98,7 +98,7 @@ public class OrderService {
         ///////////// 주문 Item List 완성////////////////
         // 주문 ItemList, Member 매개변수로 넣고
         // 주문서 생성
-        Order order = Order.creaeOrder(member,orderItemList);
+        Order order = Order.createOrder(member,orderItemList);
         // 주문서 저장
         orderRepository.save(order);
 

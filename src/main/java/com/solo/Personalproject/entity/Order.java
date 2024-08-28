@@ -1,5 +1,6 @@
 package com.solo.Personalproject.entity;
 
+import com.siot.IamportRestClient.response.Payment;
 import com.solo.Personalproject.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -18,6 +20,7 @@ public class Order extends BaseEntity {
     @GeneratedValue
     @Column(name = "order_id")
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -27,9 +30,18 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    private int price;//총 주문 가격
+
+
+    private String orderUid; // 주문 번호
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
     // private LocalDateTime regTime;
 
@@ -47,10 +59,15 @@ public class Order extends BaseEntity {
     // 상태는 주문으로 세팅
     // 주문 시간은 현재시간으로 세팅
     // 주문서 리턴
-    public static Order creaeOrder(Member member, List<OrderItem>orderItemList){
+    public static Order createOrder(Member member, List<OrderItem>orderItemList, Payment payment){
         Order order = new Order();
+        order.setOrderUid(UUID.randomUUID().toString());
         order.setMember(member);
+        order.setPayment(payment);
+
         for (OrderItem orderItem : orderItemList) {
+            order.price += (orderItem.getOrderPrice() * orderItem.getCount());
+            System.out.println(order.price);
             order.addOrderItem(orderItem);
         }
         order.setOrderStatus(OrderStatus.ORDER);
