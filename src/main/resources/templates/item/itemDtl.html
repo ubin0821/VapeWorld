@@ -80,59 +80,46 @@
                 seconds.toString().padStart(2, '0');
         }
 
-        function order() {
-            var IMP = window.IMP; // 생략 가능 (IAMPORT 객체 불러오기)
-            IMP.init("imp21870752"); // 여기에 자신의 가맹점 코드 입력
+           function order() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
 
-            var itemId = $("#itemId").val();
-            var count = $("#count").val();
-            var totalPrice = $("#totalPrice").text().replace(/[^0-9]/g, ''); // "원" 제거
+    var url = "/order";
+    var paramData = {
+        itemId: $("#itemId").val(),
+        count: $("#count").val()
+    };
 
-            IMP.request_pay({
-                pg: 'html5_inicis.INIpayTest', // 결제 대행사 (테스트용)
-                pay_method: 'card', // 결제 수단
-                merchant_uid: 'order_' + new Date().getTime(), // 주문 번호 (중복되지 않도록 생성)
-                name: $("#itemId").val(), // 상품명
-                amount: totalPrice, // 결제 금액
-                buyer_email: 'example@example.com', // 구매자 이메일 (이메일 입력 필요)
-                buyer_name: '홍길동', // 구매자 이름
-                buyer_tel: '010-1234-5678', // 구매자 전화번호
-                buyer_addr: '서울특별시 강남구', // 구매자 주소
-                buyer_postcode: '123-456' // 구매자 우편번호
-            }, function (rsp) {
-                if (rsp.success) {
-                    // 결제 성공 시 처리
-                    $.ajax({
-                        url: "/payment", // 결제 완료 후 서버에 정보 전달
-                        type: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            "payment_uid": rsp.imp_uid,
-                            "order_uid": rsp.merchant_uid
-                        }),
-                        beforeSend: function (xhr) {
-                            var token = $("meta[name='_csrf']").attr("content");
-                            var header = $("meta[name='_csrf_header']").attr("content");
-                            xhr.setRequestHeader(header, token);
-                        },
-                        dataType: "json",
-                        cache: false,
-                        success: function (result, status) {
-                            alert("결제 완료!");
-                            location.href = '/success-payment/' + rsp.merchant_uid;
-                        },
-                        error: function (jqXHR, status, error) {
-                            alert("결제 처리 중 오류가 발생했습니다.");
-                            location.href = '/fail-payment/' + rsp.merchant_uid;
-                        }
-                    });
-                } else {
-                    // 결제 실패 시 처리
-                    alert("결제 실패: " + rsp.error_msg);
-                    location.href = '/fail-payment/' + rsp.merchant_uid;
-                }
-            });
+    console.log("Sending data to server: ", paramData); // 추가된 로그
+
+    var param = JSON.stringify(paramData);
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: param,
+        beforeSend: function (xhr) {
+            // 데이터 전송하기 전에 헤더에 csrf 값을 설정
+            xhr.setRequestHeader(header, token);
+        },
+        dataType: "json",
+        cache: false,
+        success: function (result, status) {
+            alert("결제를 진행합니다..");
+            location.href = '/payment/' + result.orderId;
+        },
+        error: function (jqXHR, status, error) {
+            if (jqXHR.status == '401') {
+                alert('로그인 후 이용해주세요');
+                location.href = '/members/login';
+            } else {
+                alert(jqXHR.responseText);
+            }
         }
+    });
+}
+
          function addCart() {
      var token = $("meta[name='_csrf']").attr("content");
      var header = $("meta[name='_csrf_header']").attr("content");

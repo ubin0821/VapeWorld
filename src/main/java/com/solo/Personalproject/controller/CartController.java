@@ -80,13 +80,16 @@ public class CartController {
     @PostMapping(value = "/cart/orders")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto,
                                                       Principal principal){
+
         System.out.println(cartOrderDto.getCartItemId());
         //CartOrderDtoList List <- getCartOrderList 통해서 views에서 내려온 List
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
+
         // null or size == 0 이면 실행
         if (cartOrderDtoList == null || cartOrderDtoList.size() == 0){
             return new ResponseEntity<String>("주문하실 상품을 선택해주세요.",HttpStatus.FORBIDDEN);
         }
+
         // 전체 유효성 검사
         for (CartOrderDto cartOrder : cartOrderDtoList){
             if (!cartService.validateCartItem(cartOrder.getCartItemId(), principal.getName())){
@@ -94,14 +97,18 @@ public class CartController {
             }
         }
 
+
         Long orderId;
         String jsonResponse ="";
         try {
+
             // cart -> order
             // cartService -> orderService
             // cartOrderDtoList(CartOrderDtoList)
             orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
+
             jsonResponse = "{\"message\": \"" + orderId + "\"}";
+
         }
         catch (Exception e){ // 실패
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);

@@ -34,11 +34,11 @@ public class PaymentController {
 
 
         @GetMapping("/payment/{id}")
-        public String paymentPage(@PathVariable(name = "id", required = false) Long id, Model model, Principal principal) {
+        public String paymentPage(@PathVariable(name = "id", required = false) String id, Model model, Principal principal) {
             System.out.println(id);
 
             Member member = memberService.memberload(principal.getName());
-            RequestPayDto requestDto = paymentService.findRequestDto(id);
+            RequestPayDto requestDto = paymentService.findRequestDto(Long.valueOf(id));
 
             model.addAttribute("requestDto", requestDto);
             return "order/payment";

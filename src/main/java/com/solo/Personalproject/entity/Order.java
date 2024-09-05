@@ -1,10 +1,14 @@
 package com.solo.Personalproject.entity;
 
-
 import com.solo.Personalproject.constant.OrderStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +19,11 @@ import java.util.UUID;
 @Table(name = "orders")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order extends BaseEntity {
+    private static final Logger logger = LoggerFactory.getLogger(Order.class);
+
     @Id
     @GeneratedValue
     @Column(name = "order_id")
@@ -59,6 +67,7 @@ public class Order extends BaseEntity {
     // 상태는 주문으로 세팅
     // 주문 시간은 현재시간으로 세팅
     // 주문서 리턴
+
     public static Order createOrder(Member member, List<OrderItem>orderItemList, Payment payment){
         Order order = new Order();
         order.setOrderUid(UUID.randomUUID().toString());

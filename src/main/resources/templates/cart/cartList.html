@@ -4,8 +4,6 @@
 <head>
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-    <!-- 포트원 결제 모듈 스크립트 추가 -->
-    <script src="https://cdn.iamport.kr/imp-core-v1.0.0.js" defer></script>
 </head>
 
 <th:block layout:fragment="script">
@@ -105,82 +103,60 @@
             });
         }
 
-        function requestPay(orderTotalPrice) {
-            // Check if the IMP object is available
-            if (typeof IMP === 'undefined') {
-                console.error('IMP 객체가 정의되지 않았습니다.');
-                return;
-            }
+        function order() {
+              var token = $("meta[name='_csrf']").attr("content");
+              var header = $("meta[name='_csrf_header']").attr("content");
+              var cartId= $("#cartId").text()
+              var count = $("#cartCount").text()
 
-            IMP.init("imp21870752"); // 본인의 가맹점 식별자 사용
+             var url = "/cart/orders";
 
-            IMP.request_pay({
-                pg: 'html5_inicis.INIpayTest', // PG사 설정 확인
-                pay_method: 'card',
-                name: '주문 상품', // 실제 상품명을 서버에서 받아와야 합니다.
-                amount: orderTotalPrice, // 결제 금액
-                buyer_email: 'buyer@example.com', // 실제 구매자 이메일 서버에서 받아와야 합니다.
-                buyer_name: '구매자명', // 실제 구매자명 서버에서 받아와야 합니다.
-                buyer_tel: '010-1234-5678', // 임의의 값
-                buyer_addr: '구매자 주소', // 실제 구매자 주소 서버에서 받아와야 합니다.
-                buyer_postcode: '123-456' // 임의의 값
-            }, function(rsp) {
-                if (rsp.success) {
-                    var token = $("meta[name='_csrf']").attr("content");
-                    var header = $("meta[name='_csrf_header']").attr("content");
+        var dataList = new Array(); // 배열 생성
+        var paramData = new Object(); // 객체 생성
 
-                    var url = "/cart/orders";
 
-                    var dataList = [];
-                    $("input[name=cartChkBox]:checked").each(function(){
-                        var cartItemId = $(this).val();
-                        var data = { cartItemId: cartItemId };
-                        dataList.push(data);
-                    });
+          $("input[name=cartChkBox]:checked").each(function(){
+            var cartItemId = $(this).val(); // 체크된 객체의 값을 cartItemId에 대입
+            var data = new Object(); // 객체 생성
+            data["cartItemId"] = cartItemId; // 객체의 키("cartItemId")에 위에 선언된 cartItemId 변수(value) 대입
+            dataList.push(data); // data 객체를 dataList 배열에 push
+        });
 
-                    var paramData = {
-                        cartOrderDtoList: dataList,
-                        impUid: rsp.imp_uid,
-                        merchantUid: rsp.merchant_uid,
-                        paidAmount: rsp.paid_amount,
-                        applyNum: rsp.apply_num
-                    };
+        paramData['cartOrderDtoList'] = dataList;
+            var param = JSON.stringify(paramData);
 
-                    var param = JSON.stringify(paramData);
 
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        contentType: "application/json",
-                        data: param,
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader(header, token);
-                        },
-                        dataType: "json",
-                        cache: false,
-                        success: function (result, status) {
-                            alert('주문이 완료되었습니다.');
-                            location.href = '/orders';
-                        },
-                        error: function(jqXHR, status, error){
-                            if(jqXHR.status == '401'){
+
+
+              $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: param,
+                    beforeSend: function (xhr) {
+                        console.log("3")
+                          // 데이터 전송하기 전에 헤더에 csrf 값을 설정
+                          xhr.setRequestHeader(header, token);
+                    },
+                    dataType: "json",
+                    cache: false,
+                    success: function (result, status) {
+                           console.log("4")
+                          alert("결제를 진행합니다..");
+                            location.href = '/payment/' + result.message;
+                    },
+                    error : function(jqXHR, status, error){
+                        console.log("5")
+                          if(jqXHR.status == '401'){
                                 alert('로그인 후 이용해주세요');
-                                location.href = '/members/login';
-                            } else {
+                                location.href='/members/login';
+                          }else{
                                 alert(jqXHR.responseText);
-                            }
-                        }
-                    });
-                } else {
-                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
-                }
-            });
+                          }
+                    }
+              });
         }
 
-        function orders(){
-            var orderTotalPrice = parseInt($("#orderTotalPrice").text().replace(/[^0-9]/g, ''));
-            requestPay(orderTotalPrice);
-        }
     </script>
 </th:block>
 
@@ -271,7 +247,7 @@
             총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
         </h2>
         <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>
         </div>
     </div>
 </div>

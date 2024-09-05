@@ -36,35 +36,36 @@
         }
 
         function updateCategoryOptions() {
-            var category = $('#categorySelect').val();
-            var kindSelect = $('#kindSelect');
-            var typeContainer = $('#typeContainer');
-            var typeSelect = $('#typeSelect');
+    var category = $('#categorySelect').val();
+    var kindSelect = $('#kindSelect');
+    var typeContainer = $('#typeContainer');
+    var typeSelect = $('#typeSelect');
 
-            kindSelect.empty(); // 기존 옵션 제거
-            typeSelect.empty(); // 타입 옵션도 초기화
-            typeContainer.hide(); // 타입 선택은 기본적으로 숨김
+    kindSelect.empty(); // 기존 옵션 제거
+    typeSelect.empty(); // 타입 옵션도 초기화
+    typeContainer.hide(); // 타입 선택은 기본적으로 숨김
 
-            if (category === 'LIQUID_PHASE') {
-                kindSelect.append('<option value="M_BREATHE">입호흡 액상</option>');
-                kindSelect.append('<option value="P_BREATHE">폐호흡 액상</option>');
-                typeContainer.show(); // 액상 선택 시 타입 선택을 표시
-                updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
-            } else if (category === 'MACHINE') {
-                kindSelect.append('<option value="M_MACHINE">입호흡 기기</option>');
-                kindSelect.append('<option value="P_MACHINE">폐호흡 기기</option>');
-                kindSelect.append('<option value="O_MACHINE">일회용 전자담배</option>');
-                typeContainer.show(); // 기기 선택 시 타입 선택을 표시
-                updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
-            } else if (category === 'CONSUMABLES') {
-                kindSelect.append('<option value="POT">팟</option>');
-                kindSelect.append('<option value="COIL">코일</option>');
-                kindSelect.append('<option value="TANK">탱크</option>');
-                kindSelect.append('<option value="BATTERY">배터리</option>');
-                kindSelect.append('<option value="ACCESSOIRES">액세서리</option>');
-                typeContainer.hide(); // 소모품 선택 시 타입 선택 숨김
-            }
-        }
+    if (category === 'LIQUID_PHASE') {
+        kindSelect.append('<option value="M_BREATHE">입호흡 액상</option>');
+        kindSelect.append('<option value="P_BREATHE">폐호흡 액상</option>');
+        typeContainer.show(); // 액상 선택 시 타입 선택을 표시
+        updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
+    } else if (category === 'MACHINE') {
+        kindSelect.append('<option value="M_MACHINE">입호흡 기기</option>');
+        kindSelect.append('<option value="P_MACHINE">폐호흡 기기</option>');
+        kindSelect.append('<option value="O_MACHINE">일회용 전자담배</option>');
+        typeContainer.show(); // 기기 선택 시 타입 선택을 표시
+        updateTypeOptions(); // 초기화 시에도 타입 옵션을 업데이트
+    } else if (category === 'CONSUMABLES') {
+        kindSelect.append('<option value="POT">팟</option>');
+        kindSelect.append('<option value="COIL">코일</option>');
+        kindSelect.append('<option value="TANK">탱크</option>');
+        kindSelect.append('<option value="BATTERY">배터리</option>');
+        kindSelect.append('<option value="ACCESSOIRES">액세서리</option>');
+        typeSelect.append('<option value="">없음</option>'); // 기본 빈 값 추가
+        typeContainer.hide(); // 소모품 선택 시 타입 선택 숨김
+    }
+}
 
         function updateTypeOptions() {
             var kind = $('#kindSelect').val();

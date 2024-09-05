@@ -18,7 +18,6 @@ public class Payment {
     private Long id;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-
     private int price;
     private String paymentUid;
 
@@ -32,8 +31,8 @@ public class Payment {
         this.status = status;
         this.paymentUid = paymentUid;
     }
-    @Builder
-    public  void  updatepayment(Order order){
+
+    public void updatePayment(Order order) {
         this.price = order.getPrice();
     }
 }
