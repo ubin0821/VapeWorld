@@ -6,6 +6,7 @@ import com.solo.Personalproject.service.MailService;
 import com.solo.Personalproject.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
+    @Value("${admin.code}")
+    private String adminCode;
+
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
@@ -47,21 +51,18 @@ public class MemberController {
         return "members/memberForm";
     }
     @PostMapping(value = "/new")
-    public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult,
-                             Model model) {
-        // @Valid 붙은 객체를 검사해서 결과에 에러가 있으면 실행
-        if(bindingResult.hasErrors()){
-            System.out.println(bindingResult);
-            return "members/memberForm";//다시 회원가입으로 돌려보닙니다.
+    public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "members/memberForm";
         }
-        try{
-            //Member 객체 생성
-            Member member = Member.createMember(memberFormDto, passwordEncoder);
-            //데이터베이스에 저장
+        try {
+            // 어드민 코드 비교하여 역할 설정
+            Member member = Member.createMember(memberFormDto, passwordEncoder, adminCode);
+
+            // 회원 저장
             memberService.saveMember(member);
-        }
-        catch (IllegalStateException e){
-            model.addAttribute("errorMessage",e.getMessage());
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "members/memberForm";
         }
         return "members/anno";

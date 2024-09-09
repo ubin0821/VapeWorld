@@ -139,7 +139,10 @@
         <!-------------------------------전화 인증----------------------------------------->
         <p id="verificationMessage"></p>
     </div>
-
+    <div class="form-group">
+        <label th:for="adminCode">관리자 코드</label>
+        <input type="text" th:field="*{adminCode}" placeholder="관리자 코드를 입력하세요">
+    </div>
 
     <p id="telError" class="fieldError" style="display:none;">전화번호를 입력해주세요.</p>
     <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError" ></p>

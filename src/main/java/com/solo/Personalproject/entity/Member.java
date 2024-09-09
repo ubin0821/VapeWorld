@@ -9,18 +9,22 @@ import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
-@Table(name="member")
+@Table(name = "member")
 @Getter
 @Setter
 @ToString
 public class Member extends BaseEntity {
+
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
+
     @Column(unique = true)
     private String email;
+
     private String password;
     private String address;
     private String postcode;
@@ -30,7 +34,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static Member createMember(MemberFormDto memberFormDto , PasswordEncoder passwordEncoder){
+    // 관리자 코드와 사용자를 생성하는 메서드
+    public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder, String adminCodeFromConfig) {
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
@@ -38,9 +43,19 @@ public class Member extends BaseEntity {
         member.setTel(memberFormDto.getTel());
         member.setPostcode(memberFormDto.getPostcode());
         member.setDetailAddress(memberFormDto.getDetailAddress());
+
+        // 비밀번호 암호화
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-        member.setRole(Role.ADMIN);
+
+        // 입력된 adminCode와 설정된 adminCode를 비교하여 역할 설정
+        if (adminCodeFromConfig.equals(memberFormDto.getAdminCode())) {
+            member.setRole(Role.ADMIN);
+        } else {
+            member.setRole(Role.USER);
+        }
+
         return member;
     }
 }
+

@@ -83,6 +83,8 @@
            function order() {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
+    var cartId= $("#cartId").text()
+              var count = $("#cartCount").text()
 
     var url = "/order";
     var paramData = {
@@ -90,7 +92,6 @@
         count: $("#count").val()
     };
 
-    console.log("Sending data to server: ", paramData); // 추가된 로그
 
     var param = JSON.stringify(paramData);
 
@@ -106,7 +107,7 @@
         dataType: "json",
         cache: false,
         success: function (result, status) {
-            alert("결제를 진행합니다..");
+            alert("결제 페이지로 이동합니다.");
             location.href = '/payment/' + result.orderId;
         },
         error: function (jqXHR, status, error) {

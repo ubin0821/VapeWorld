@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
     String apiKey = "8010643278455002";
-    String secretKey = "JuOOk1x2YJX50wcHTJ5XEKgGFoC20GMie4kLYnVtUwYczhc4iRjKJCywRH6W7CA6ehEyrNSCImRUNOtR";
+    String secretKey = "bOJwuyzDDsiW2Vzmtyj49mzL1NtQb3p1pYcm1S4IF2pTrpfyGVfiOQx4HZxpW6hoTMbZL54z07ClxsPW";
 
     @Bean
     public IamportClient iamportClient() {

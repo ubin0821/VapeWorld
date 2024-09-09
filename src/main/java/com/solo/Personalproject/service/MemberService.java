@@ -1,5 +1,7 @@
 package com.solo.Personalproject.service;
 
+import com.solo.Personalproject.constant.Role;
+import com.solo.Personalproject.dto.MemberFormDto;
 import com.solo.Personalproject.entity.Member;
 import com.solo.Personalproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +48,20 @@ public class MemberService implements UserDetailsService  {
     }
     public Member memberload(String email){
         return memberRepository.findByEmail(email);
+    }
+    public static Member createAdminMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
+        Member member = new Member();
+        // 필드 설정
+        member.setRole(Role.valueOf("ADMIN"));
+        member.setPassword(passwordEncoder.encode(memberFormDto.getPassword()));
+        return member;
+    }
+
+    public static Member createUserMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
+        Member member = new Member();
+        // 필드 설정
+        member.setRole(Role.valueOf("USER"));
+        member.setPassword(passwordEncoder.encode(memberFormDto.getPassword()));
+        return member;
     }
 }

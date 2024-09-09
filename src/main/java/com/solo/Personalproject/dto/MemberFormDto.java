@@ -27,4 +27,6 @@ public class MemberFormDto {
 
     @NotBlank(message = "전화번호를 입력 해 주세요.")
     private String tel;
+
+    private String adminCode;
 }
