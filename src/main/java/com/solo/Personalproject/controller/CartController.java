@@ -3,7 +3,9 @@ package com.solo.Personalproject.controller;
 import com.solo.Personalproject.dto.CartDetailDto;
 import com.solo.Personalproject.dto.CartItemDto;
 import com.solo.Personalproject.dto.CartOrderDto;
+import com.solo.Personalproject.entity.Member;
 import com.solo.Personalproject.service.CartService;
+import com.solo.Personalproject.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+    private final MemberService memberService;
 
     @PostMapping(value = "/cart")
     public @ResponseBody
@@ -50,6 +53,16 @@ public class CartController {
     public String orderHist(Principal principal, Model model){
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal.getName());
         model.addAttribute("cartItems",cartDetailDtoList);
+        if (principal != null) {
+            String email = principal.getName(); // 로그인된 사용자의 이메일 가져오기
+            Member member = memberService.memberload(email); // 이메일로 Member 객체 조회
+
+            if (member != null && member.getName() != null) {
+                model.addAttribute("name", member.getName()); // 실제 사용자 이름 추가
+            } else {
+                model.addAttribute("name", "회원"); // 사용자 이름을 못 찾았을 때 대체 텍스트
+            }
+        }
         return "cart/cartList";
     }
     @PatchMapping(value = "/cartItem/{cartItemId}")

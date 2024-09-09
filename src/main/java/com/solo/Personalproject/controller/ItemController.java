@@ -3,7 +3,9 @@ package com.solo.Personalproject.controller;
 import com.solo.Personalproject.dto.ItemFormDto;
 import com.solo.Personalproject.dto.ItemSearchDto;
 import com.solo.Personalproject.entity.Item;
+import com.solo.Personalproject.entity.Member;
 import com.solo.Personalproject.service.ItemService;
+import com.solo.Personalproject.service.MemberService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +29,22 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final MemberService memberService;
     @GetMapping(value = "/admin/item/new")
-    public String itemForm(Model model){
-        model.addAttribute("itemFormDto",new ItemFormDto());
+    public String itemForm(Model model, Principal principal) {
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        // 사용자 이름 가져오기
+        String userName = "회원"; // 기본값
+        if (principal != null) {
+            String email = principal.getName();
+            Member member = memberService.memberload(email);
+            if (member != null && member.getName() != null) {
+                userName = member.getName();
+            }
+        }
+        model.addAttribute("name", userName);
+
         return "item/itemForm";
     }
     @PostMapping(value = "/admin/item/new")
@@ -88,22 +104,45 @@ public class ItemController {
     // value 2개인 이유 -> 1. 네비게이션에서 상품관리 클릭 2. 상품관리 안에서 페이지 이동
     @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
     public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page,
-                             Model model){
-        // page.isPresent() -> page 값이 있는지 확인
-        // 값 있을 시 page.get() , 값 없을 시 0
-        // 한 페이지에 개수 -> 5개
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0,5);
+                             Model model, Principal principal) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
 
-        Page<Item> items = itemService.getAdminItemPage(itemSearchDto,pageable);
-        model.addAttribute("items",items);
-        model.addAttribute("itemSearchDto",itemSearchDto);
-        model.addAttribute("maxPage",5);
+        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        // 사용자 이름 가져오기
+        String userName = "회원"; // 기본값
+        if (principal != null) {
+            String email = principal.getName();
+            Member member = memberService.memberload(email);
+            if (member != null && member.getName() != null) {
+                userName = member.getName();
+            }
+        }
+
+        model.addAttribute("name", userName);
+
         return "item/itemMng";
     }
     @GetMapping(value = "/item/{itemId}")
-    public String itemDtl(Model model, @PathVariable("itemId")Long itemId){
+    public String itemDtl(Model model, @PathVariable("itemId") Long itemId, Principal principal) {
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-        model.addAttribute("item",itemFormDto);
+        model.addAttribute("item", itemFormDto);
+
+        // 사용자 이름 가져오기
+        String userName = "회원"; // 기본값
+        if (principal != null) {
+            String email = principal.getName();
+            Member member = memberService.memberload(email);
+            if (member != null && member.getName() != null) {
+                userName = member.getName();
+            }
+        }
+
+        model.addAttribute("name", userName);
+
         return "item/itemDtl";
     }
 

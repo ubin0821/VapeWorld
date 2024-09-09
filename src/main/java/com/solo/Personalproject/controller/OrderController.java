@@ -2,6 +2,8 @@ package com.solo.Personalproject.controller;
 
 import com.solo.Personalproject.dto.OrderDto;
 import com.solo.Personalproject.dto.OrderHistDto;
+import com.solo.Personalproject.entity.Member;
+import com.solo.Personalproject.service.MemberService;
 import com.solo.Personalproject.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,45 +26,67 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final MemberService memberService;
 
     @PostMapping(value = "/order")
-    public @ResponseBody
-    ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
-                         Principal principal){
-        // String a = "abc" + "def"
-        // StringBuilder a;
-        // a.append("abc");
-        // a.append("def");
-        if (bindingResult.hasErrors()){
+    public @ResponseBody ResponseEntity<String> order(
+            @RequestBody @Valid OrderDto orderDto,
+            BindingResult bindingResult,
+            Principal principal) {
+
+        if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            for (FieldError fieldError : fieldErrors){
+            for (FieldError fieldError : fieldErrors) {
                 sb.append(fieldError.getDefaultMessage());
             }
-            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
-        // 로그인 정보 -> Spring Security
-        // principal.getName() -> 현재 로그인 된 정보
+
         String email = principal.getName();
         Long orderId;
         try {
-            orderId = orderService.order(orderDto,email);
-        }catch (Exception e){
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            orderId = orderService.order(orderDto, email);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        String jsonResponse = "{\"orderId\": \"" + orderId + "\"}";
-        return  new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+
+        // 사용자 이름 가져오기
+        String userName = "회원"; // 기본값
+        if (email != null) {
+            Member member = memberService.memberload(email);
+            if (member != null && member.getName() != null) {
+                userName = member.getName();
+            }
+        }
+
+        // JSON 응답에 사용자 이름 포함
+        String jsonResponse = String.format("{\"orderId\": \"%d\", \"userName\": \"%s\"}", orderId, userName);
+        return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/orders","/orders/{page}"})
-    public String orderHist(@PathVariable("page") Optional<Integer> page, Principal principal, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0,5);
+    @GetMapping(value = {"/orders", "/orders/{page}"})
+    public String orderHist(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
 
         Page<OrderHistDto> orderHistDtoList = orderService.getOrderList(principal.getName(), pageable);
 
-        model.addAttribute("orders" , orderHistDtoList);
+        model.addAttribute("orders", orderHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("maxPage",5);
+        model.addAttribute("maxPage", 5);
+
+        // 사용자 이름 가져오기
+        String userName = "회원"; // 기본값
+        String email = principal.getName();
+        if (email != null) {
+            Member member = memberService.memberload(email);
+            if (member != null && member.getName() != null) {
+                userName = member.getName();
+            }
+        }
+
+        model.addAttribute("name", userName);
+
         return "order/orderHist";
     }
 

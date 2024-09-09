@@ -230,32 +230,37 @@ li:hover .smenu li {
                     </ol>
                 </div>
             </li>
-
         </ul>
-
-
-
-        <!-- 로그인/회원가입 또는 로그아웃 링크 -->
-        <div class="auth-links">
-            <a href="/cart">장바구니</a>
-            <a href="/orders">구매이력</a>
-            <a th:href="@{/members/login}"
+        <ul>
+        <li>
+            <a href="#">마이페이지</a>
+            <div class="sbox s8">
+                <ol class="smenu">
+           <li> <a href="/cart">장바구니</a></li>
+            <li><a href="/orders">구매이력</a></li>
+            <li><a th:href="@{/members/login}"
                th:if="${#authorization.expression('isAnonymous()')}"
-               class="auth-button">로그인</a>
-
-            <a th:href="@{/members/consent}"
+               class="auth-button">로그인</a></li>
+            <li><a th:href="@{/members/consent}"
                th:if="${#authorization.expression('isAnonymous()')}"
-               class="auth-button">회원가입</a>
-
-            <a th:href="@{/members/logout}"
+               class="auth-button">회원가입</a></li>
+            <li><a th:href="@{/members/logout}"
                th:if="${#authorization.expression('isAuthenticated()')}"
-               class="auth-button">로그아웃</a>
-            <a th:href="@{/admin/item/new}"
-               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 등록</a>
-            <a th:href="@{/admin/items}"
-               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a>
+               class="auth-button">로그아웃</a></li>
+            <li><a th:href="@{/admin/item/new}"
+               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 등록</a></li>
+            <li><a th:href="@{/admin/items}"
+               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a></li>
+                </ol>
+
+        </div>
+        </li>
+        </ul>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <span th:text="'환영합니다, ' + ${name} + '님!'"></span>
         </div>
     </nav>
+
     </body>
 </header>
 </html>
