@@ -121,7 +121,36 @@
                 element.innerText = formattedPrice;
             });
         });
+        function getCookie(name) {
+    var obj = name + "=";
+    var x = 0;
+    while (x <= document.cookie.length) {
+      var y = (x + obj.length);
+      if (document.cookie.substring(x, y) == obj) {
+        if ((endOfCookie = document.cookie.indexOf(";", y)) == -1)
+          endOfCookie = document.cookie.length;
+        return unescape(document.cookie.substring(y, endOfCookie));
+      }
+      x = document.cookie.indexOf(" ", x) + 1;
 
+      if (x == 0) break;
+    }
+    return "";
+  }
+
+  function move() {
+    location = '/subscribe';
+  }
+  function popUp() {
+    const value = getCookie('divpop1');
+    if (!value) {
+      window.open("popup", "", "width=570px, height=600px");
+    }
+
+  }
+  window.onload = function () {
+    popUp();
+  };
     </script>
 </head>
 <body>

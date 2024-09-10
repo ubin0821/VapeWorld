@@ -1,9 +1,6 @@
 package com.solo.Personalproject.service;
 
-import com.solo.Personalproject.dto.ItemFormDto;
-import com.solo.Personalproject.dto.ItemImgDto;
-import com.solo.Personalproject.dto.ItemSearchDto;
-import com.solo.Personalproject.dto.MainItemDto;
+import com.solo.Personalproject.dto.*;
 import com.solo.Personalproject.entity.Item;
 import com.solo.Personalproject.entity.ItemImg;
 import com.solo.Personalproject.repository.ItemImgRepository;
@@ -18,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -80,6 +78,21 @@ public class ItemService {
         }
         return item.getId();
     }
+    // LIQUID_PHASE 카테고리 상품 조회
+    public List<ItemDto> getLiquidItems() {
+        // Item 엔티티를 ItemDto로 변환하여 반환
+        List<Item> items = itemRepository.findByCategory("LIQUID_PHASE");
+
+        // items가 null이거나 빈 리스트인지 확인
+        if (items == null || items.isEmpty()) {
+            throw new IllegalStateException("LIQUID_PHASE 카테고리에 해당하는 상품이 없습니다.");
+        }
+
+        return items.stream()
+                .filter(item -> item != null) // null 체크
+                .map(ItemDto::new) // Item -> ItemDto 변환
+                .collect(Collectors.toList());
+    }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true) // 쿼리문 실행  읽기만 가능
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
@@ -89,4 +102,5 @@ public class ItemService {
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return  itemRepository.getMainItemPage(itemSearchDto,pageable);
     }
+
 }

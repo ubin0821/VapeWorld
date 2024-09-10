@@ -1,5 +1,6 @@
 package com.solo.Personalproject.dto;
 
+import com.solo.Personalproject.entity.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +18,10 @@ public class ItemDto {
     private String ki;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+    public ItemDto(Item item) {
+        this.id = item.getId();
+        this.itemNm = item.getItemNm();
+        this.price = item.getPrice();
+        this.itemDetail = item.getItemDetail();
+    }
 }

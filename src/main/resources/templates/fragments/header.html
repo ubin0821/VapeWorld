@@ -152,88 +152,18 @@ li:hover .smenu li {
                 <img th:src="@{/css/images/logo.png}" alt="logo">
             </a>
         </div>
-
-        <!-- 네비게이션 메뉴 -->
         <ul>
-
-
-            <!-- ADMIN 권한을 가진 사용자만 표시 -->
-
-
             <li>
-                <a href="#">입호흡 액상</a>
-                <div class="sbox s1">
-                    <ol class="smenu">
-                        <li><a href="#">과일 액상</a></li>
-                        <li><a href="#">맨솔 액상</a></li>
-                        <li><a href="#">디저트 액상</a></li>
-                        <li><a href="#">음료 액상</a></li>
-                        <li><a href="#">연초 액상</a></li>
-                    </ol>
-                </div>
+                <a href="/liquid_phase">액상</a>
             </li>
             <li>
-                <a href="#">폐호흡 액상</a>
-                <div class="sbox s2">
-                    <ol class="smenu">
-                        <li><a href="#">과일 액상</a></li>
-                        <li><a href="#">맨솔 액상</a></li>
-                        <li><a href="#">디저트 액상</a></li>
-                        <li><a href="#">음료 액상</a></li>
-                        <li><a href="#">연초 액상</a></li>
-                    </ol>
-                </div>
+                <a href="/machine">전자담배</a>
             </li>
             <li>
-                <a href="#">일회용 전자담배</a>
-                <div class="sbox s3">
-                    <ol class="smenu">
-                        <li><a href="#">퍼프 솔트</a></li>
-                        <li><a href="#">네스티 픽스고</a></li>
-                        <li><a href="#">오르카 에어</a></li>
-                    </ol>
-                </div>
+                <a href="/consumables">소모품</a>
             </li>
             <li>
-                <a href="#">입호흡 기기</a>
-                <div class="sbox s5">
-                    <ol class="smenu">
-                        <li><a href="#">발라리안</a></li>
-                        <li><a href="#">부푸</a></li>
-                        <li><a href="#">긱베이프</a></li>
-                        <li><a href="#">베이포레소</a></li>
-                        <li><a href="#">한야</a></li>
-                    </ol>
-                </div>
-            </li>
-            <li>
-                <a href="#">폐호흡 기기</a>
-                <div class="sbox s6">
-                    <ol class="smenu">
-                        <li><a href="#">닷모드</a></li>
-                        <li><a href="#">베이프루션</a></li>
-                        <li><a href="#">도포</a></li>
-                        <li><a href="#">아스파이어</a></li>
-                        <li><a href="#">린코</a></li>
-                    </ol>
-                </div>
-            </li>
-            <li>
-                <a href="#">소모품</a>
-                <div class="sbox s7">
-                    <ol class="smenu">
-                        <li><a href="#">팟</a></li>
-                        <li><a href="#">코일</a></li>
-                        <li><a href="#">탱크</a></li>
-                        <li><a href="#">배터리</a></li>
-                        <li><a href="#">액세서리</a></li>
-                    </ol>
-                </div>
-            </li>
-        </ul>
-        <ul>
-        <li>
-            <a href="#">마이페이지</a>
+            <a href="#">마이메뉴</a>
             <div class="sbox s8">
                 <ol class="smenu">
            <li> <a href="/cart">장바구니</a></li>
@@ -252,7 +182,6 @@ li:hover .smenu li {
             <li><a th:href="@{/admin/items}"
                th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a></li>
                 </ol>
-
         </div>
         </li>
         </ul>
