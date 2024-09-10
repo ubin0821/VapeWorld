@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.authorizeRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error","/consent").permitAll()
                 .requestMatchers("/", "/members/**","/item/**","/images/**","/orders/**","/payment/**"
-                                ,"/liquid_phase","/machine","/consumables","/popup").permitAll()
+                                ,"/liquid_phase","/machine","/consumables","/popup","/pop","/event/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).formLogin(formLogin -> formLogin
