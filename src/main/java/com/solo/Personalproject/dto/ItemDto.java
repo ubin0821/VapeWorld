@@ -18,10 +18,5 @@ public class ItemDto {
     private String ki;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
-    public ItemDto(Item item) {
-        this.id = item.getId();
-        this.itemNm = item.getItemNm();
-        this.price = item.getPrice();
-        this.itemDetail = item.getItemDetail();
-    }
+
 }

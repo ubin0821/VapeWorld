@@ -7,6 +7,61 @@
     <title>로그인 페이지</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link th:href="@{/css/layout1.css}" rel="stylesheet">
+    <style>
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* 버튼 간격 */
+            margin-top: 20px;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .button img {
+            margin-right: 10px;
+        }
+
+        .button--google {
+            background-color: #4285F4; /* 구글 파란색 */
+        }
+
+        .button--google:hover {
+            background-color: #357ae8;
+        }
+
+        .button--kakao {
+            background-color: #FEE500; /* 카카오 노란색 */
+            color: #3c1e1e; /* 카카오 브라운 텍스트 */
+        }
+
+        .button--kakao:hover {
+            background-color: #e5cc00;
+        }
+
+        .button--naver {
+            background-color: #03C75A; /* 네이버 그린 */
+        }
+
+        .button--naver:hover {
+            background-color: #02b54e;
+        }
+
+        /* Hover 시 살짝 확대되는 효과 */
+        .button:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 <form action="/members/login" role="form" method="post">
@@ -29,6 +84,20 @@
                 </form>
                 <div class="text-center mt-3">
                     <a th:href="@{/members/new}">회원가입</a>
+                </div>
+                <div class="wrapper" style="text-align: center;">
+                    <a href="/oauth2/authorization/google" class="button button--google">
+                        <img th:src="@{/css/images/google.png}" height="50">
+                        Google
+                    </a>
+                    <a href="/oauth2/authorization/kakao" class="button button--kakao">
+                        <img th:src="@{/css/images/kakao.png}" height="50">
+                        Kakao
+                    </a>
+                    <a href="/oauth2/authorization/naver" class="button button--naver">
+                        <img th:src="@{/css/images/naver.png}" height="50">
+                        Naver
+                    </a>
                 </div>
             </div>
         </div>

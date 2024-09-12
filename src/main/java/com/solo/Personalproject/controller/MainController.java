@@ -25,7 +25,7 @@ public class MainController {
     @GetMapping(value = "/")
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal) {
         // 한 페이지에 20개의 상품을 표시하도록 수정
-        Pageable pageable = PageRequest.of(page.orElse(0), 20); // 페이지당 20개씩
+        Pageable pageable = PageRequest.of(page.orElse(0), 10); // 페이지당 20개씩
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
 
         model.addAttribute("items", items);

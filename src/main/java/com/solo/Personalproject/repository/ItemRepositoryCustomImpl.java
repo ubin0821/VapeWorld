@@ -3,6 +3,7 @@ package com.solo.Personalproject.repository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.solo.Personalproject.constant.Category;
 import com.solo.Personalproject.constant.ItemSellStatus;
 import com.solo.Personalproject.dto.ItemSearchDto;
 import com.solo.Personalproject.dto.MainItemDto;
@@ -59,6 +60,21 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.itemDetail,itemImg.imgUrl,item.price))
                 .from(itemImg).join(itemImg.item,item).where(itemImg.repImgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
+        List<MainItemDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content,pageable,total);
+    }
+    @Override
+    public Page<MainItemDto> getCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Category category) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+        //QMainItemDto @QueryProjection을 활용하면 Dto 바로 조회 가능
+        QueryResults<MainItemDto> results = queryFactory.select(new QMainItemDto(item.id,item.itemNm,
+                        item.itemDetail,itemImg.imgUrl,item.price))
+                .from(itemImg).join(itemImg.item,item).where(itemImg.repImgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .where(item.category.eq(category))
                 .orderBy(item.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
         List<MainItemDto> content = results.getResults();
         long total = results.getTotal();

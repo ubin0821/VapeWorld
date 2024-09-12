@@ -1,5 +1,6 @@
 package com.solo.Personalproject.service;
 
+import com.solo.Personalproject.constant.Category;
 import com.solo.Personalproject.dto.*;
 import com.solo.Personalproject.entity.Item;
 import com.solo.Personalproject.entity.ItemImg;
@@ -78,21 +79,7 @@ public class ItemService {
         }
         return item.getId();
     }
-    // LIQUID_PHASE 카테고리 상품 조회
-    public List<ItemDto> getLiquidItems() {
-        // Item 엔티티를 ItemDto로 변환하여 반환
-        List<Item> items = itemRepository.findByCategory("LIQUID_PHASE");
 
-        // items가 null이거나 빈 리스트인지 확인
-        if (items == null || items.isEmpty()) {
-            throw new IllegalStateException("LIQUID_PHASE 카테고리에 해당하는 상품이 없습니다.");
-        }
-
-        return items.stream()
-                .filter(item -> item != null) // null 체크
-                .map(ItemDto::new) // Item -> ItemDto 변환
-                .collect(Collectors.toList());
-    }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true) // 쿼리문 실행  읽기만 가능
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
@@ -102,5 +89,10 @@ public class ItemService {
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return  itemRepository.getMainItemPage(itemSearchDto,pageable);
     }
-
+    public Page<MainItemDto> getCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Category category){
+        return itemRepository.getCategoryItemPage(itemSearchDto,pageable,category);
+    }
+    public long countItemsByCategory(Category category) {
+        return itemRepository.countByCategory(category);
+    }
 }

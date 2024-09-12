@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -80,4 +81,5 @@ public class Item extends BaseEntity {
     }
 
     public void addStock(int stockNumber) {this.stockNumber += stockNumber;}
+
 }

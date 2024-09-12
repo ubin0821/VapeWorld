@@ -1,5 +1,6 @@
 package com.solo.Personalproject.repository;
 
+import com.solo.Personalproject.constant.Category;
 import com.solo.Personalproject.dto.ItemSearchDto;
 import com.solo.Personalproject.dto.MainItemDto;
 import com.solo.Personalproject.entity.Item;
@@ -10,4 +11,6 @@ public interface ItemRepositoryCustom {
     Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
 
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+
+    Page<MainItemDto> getCategoryItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Category category);
 }

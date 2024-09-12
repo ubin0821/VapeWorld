@@ -4,14 +4,136 @@
       layout:decorate="~{layouts/layout1}">
 <head>
     <meta charset="UTF-8">
-    <title>액상</title>
+    <title>VapeWorld - 액상</title>
+    <style>
+        /* 카드 디자인 */
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px; /* 더 부드러운 둥근 모서리 */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* 더 강렬한 그림자 */
+            transition: transform 0.4s ease, box-shadow 0.4s ease; /* 부드러운 애니메이션 */
+            background-color: #ffffff;
+        }
+
+        .card:hover {
+            transform: translateY(-10px); /* 위로 살짝 올라가는 효과 */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); /* 더 깊은 그림자 */
+        }
+
+        .card img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-bottom: 3px solid #ddd; /* 이미지 아래에 진한 경계선 */
+        }
+
+        .card-body {
+            opacity: 0; /* 기본적으로 숨김 */
+            transition: opacity 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8); /* 진한 오버레이 */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 30px; /* 여백 추가 */
+        }
+
+        .card:hover .card-body {
+            opacity: 1; /* 마우스 올리면 보이도록 */
+        }
+
+        .card-body h4, .card-body h3 {
+            margin: 0;
+        }
+
+        .card-body h4 {
+            font-size: 1.5rem; /* 더 큰 상품명 */
+            font-weight: bold;
+        }
+
+        .card-body h3 {
+            font-size: 2rem; /* 더 큰 가격 폰트 */
+            color: #ffdd57; /* 황금색 */
+        }
+
+        .card-body h3::after {
+            content: ' 원'; /* 가격 뒤에 원 추가 */
+            color: #ffffff;
+        }
+
+        /* 페이지 네비게이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .pagination .page-item {
+            margin: 0 6px; /* 버튼 간격 조정 */
+        }
+
+        .pagination .page-link {
+            display: inline-block;
+            padding: 10px 15px; /* 더 큰 버튼 */
+            border-radius: 10px; /* 둥근 버튼 */
+            background-color: #4CAF50; /* 녹색 */
+            color: white;
+            border: none;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #388E3C; /* 더 진한 녹색 */
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #e0e0e0;
+            color: #b0b0b0;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #ff7043; /* 주황색 */
+            color: white;
+        }
+
+    </style>
+    <script>
+        // 가격에 쉼표 추가하는 함수
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.card-body h3').forEach(element => {
+                const priceText = element.innerText.replace('원', '');
+                const formattedPrice = formatPrice(parseInt(priceText.replace(/,/g, ''), 10));
+                element.innerText = formattedPrice;
+            });
+        });
+
+    </script>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container text-center">
+        <p>TOTAL: <span th:text="${totalCount}"></span></p>
         <div class="row row-cols-5">
-            <th:block th:each="item : ${items}">
+            <th:block th:each="item, status: ${items.getContent()}">
                 <div class="col">
                     <div class="card">
                         <a th:href="'/item/'+${item.id}" class="text-dark">
@@ -23,9 +145,39 @@
                         </a>
                     </div>
                 </div>
+                <th:block th:if="${status.index % 5 == 4}">
+        </div>
+        <div class="row row-cols-5">
+            </th:block>
             </th:block>
         </div>
     </div>
+    <br>
+    <br>
+    <div th:with="start=${(items.number/maxPage)*maxPage +1},
+             end=(${(items.totalPages == 0) ? 1 :(start + (maxPage-1) < items.totalPages ?
+             start + (maxPage -1) : items.totalPages)})">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${items.number eq 0}?'disabled'">
+                <a th:href="@{'/'+ '?searchQuery=' +${itemSearchDto.searchQuery} + '&page='+${items.number-1}}"
+                   aria-label='Previous' class="page-link">
+                    <span aria-hidden="true">이전</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="page : ${#numbers.sequence(start,end)}"
+                th:classappend="${items.number eq page-1}?'active':''">
+                <a th:href="@{'/'+'?searchQuery=' + ${itemSearchDto.searchQuery}+'&page=' +${page-1}}"
+                   th:inline="text" class="page-link">[[${page}]]</a>
+            </li>
+            <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled'">
+                <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number + 1}}"
+                   aria-label="Next" class="page-link">
+                    <span aria-hidden="true"> 다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
 </div>
 </body>
 </html>

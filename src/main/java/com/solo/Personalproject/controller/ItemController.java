@@ -1,5 +1,7 @@
 package com.solo.Personalproject.controller;
 
+import com.solo.Personalproject.constant.Category;
+import com.solo.Personalproject.dto.ItemDto;
 import com.solo.Personalproject.dto.ItemFormDto;
 import com.solo.Personalproject.dto.ItemSearchDto;
 import com.solo.Personalproject.entity.Item;
@@ -9,6 +11,7 @@ import com.solo.Personalproject.service.MemberService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -145,5 +148,7 @@ public class ItemController {
 
         return "item/itemDtl";
     }
+
+
 
 }
