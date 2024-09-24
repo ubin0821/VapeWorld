@@ -28,7 +28,7 @@ public class SecurityConfig {
         http.authorizeRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error","/consent").permitAll()
                 .requestMatchers("/", "/members/**","/item/**","/images/**","/orders/**","/payment/**"
-                                ,"/liquid_phase","/machine","/consumables","/popup","/pop","/event/**").permitAll()
+                                ,"/liquid_phase","/machine","/consumables","/popup","/pop","/event/**","/delete").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).formLogin(formLogin -> formLogin
@@ -46,10 +46,8 @@ public class SecurityConfig {
         );
         http.exceptionHandling(exception -> exception
                 .authenticationEntryPoint(new CustomAuthenticationEntrypoint()));
-        http
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                );
+        http.csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
         return http.build();
     }
     @Bean

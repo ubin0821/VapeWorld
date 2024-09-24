@@ -12,6 +12,7 @@
             });
         });
 
+
         function page(page){
             var searchDateType = $("#searchDateType").val();
             var searchSellStatus = $("#searchSellStatus").val();
@@ -35,6 +36,7 @@
 </th:block>
 
 <div layout:fragment="content">
+    <h1>상품 관리</h1>
     <form th:action="@{'/admin/items/'+${items.number}}" role="form" method="get" th:object="${items}">
         <table class="table">
             <thead>
@@ -92,7 +94,6 @@
             </select>
             <select th:field="*{searchBy}" class="form-control" style="width:auto;">
                 <option value="itemNm">상품명</option>
-                <option value="createdBy">등록자</option>
             </select>
             <input th:field="*{searchQuery}" type="text" class="form-control" style="width:auto; margin-right: 15px;" placeholder="검색어를 입력해주세요">
             <button id="searchBtn" type="submit" class="form-control btn btn-primary" style="width:auto">검색</button>

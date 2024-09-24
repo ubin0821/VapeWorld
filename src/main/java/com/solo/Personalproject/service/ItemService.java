@@ -81,6 +81,7 @@ public class ItemService {
     }
 
 
+
     @org.springframework.transaction.annotation.Transactional(readOnly = true) // 쿼리문 실행  읽기만 가능
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getAdminItemPage(itemSearchDto,pageable);
