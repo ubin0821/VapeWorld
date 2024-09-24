@@ -94,8 +94,6 @@ public class InventoryController {
         Page<MainItemDto> getCategoryItemPage=itemService.getCategoryItemPage(itemSearchDto,pageable,Category.CONSUMABLES);
         model.addAttribute("items", getCategoryItemPage);
         model.addAttribute("totalCount", itemService.countItemsByCategory(Category.CONSUMABLES));
-
         return "inventory/consumables";
-
     }
 }

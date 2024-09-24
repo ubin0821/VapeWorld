@@ -6,6 +6,11 @@
     <meta charset="UTF-8">
     <title>VapeWorld - 액상</title>
     <style>
+        body {
+            background-color: #f0f0f0; /* 배경 색상 */
+            font-family: Arial, sans-serif; /* 폰트 설정 */
+        }
+
         /* 카드 디자인 */
         .card {
             position: relative;
@@ -14,6 +19,7 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* 더 강렬한 그림자 */
             transition: transform 0.4s ease, box-shadow 0.4s ease; /* 부드러운 애니메이션 */
             background-color: #ffffff;
+            margin-bottom: 30px; /* 카드 간격 조정 */
         }
 
         .card:hover {
@@ -109,7 +115,6 @@
             background-color: #ff7043; /* 주황색 */
             color: white;
         }
-
     </style>
     <script>
         // 가격에 쉼표 추가하는 함수
@@ -124,15 +129,17 @@
                 element.innerText = formattedPrice;
             });
         });
-
     </script>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container text-center">
-        <p>TOTAL: <span th:text="${totalCount}"></span></p>
-        <div class="row row-cols-5">
+
+        <h1>액상 상품 목록</h1> <!-- 페이지 제목 추가 -->
+
+        <p>TOTAL: <span th:text="${totalCount}"></span>개</p> <!-- 총 상품 수 추가 -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4"> <!-- 카드 레이아웃 -->
             <th:block th:each="item, status: ${items.getContent()}">
                 <div class="col">
                     <div class="card">
@@ -145,14 +152,9 @@
                         </a>
                     </div>
                 </div>
-                <th:block th:if="${status.index % 5 == 4}">
-        </div>
-        <div class="row row-cols-5">
-            </th:block>
             </th:block>
         </div>
     </div>
-    <br>
     <br>
     <div th:with="start=${(items.number/maxPage)*maxPage +1},
              end=(${(items.totalPages == 0) ? 1 :(start + (maxPage-1) < items.totalPages ?
@@ -177,7 +179,7 @@
             </li>
         </ul>
     </div>
-
 </div>
+
 </body>
 </html>

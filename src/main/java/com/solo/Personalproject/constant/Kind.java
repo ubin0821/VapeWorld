@@ -1,9 +1,11 @@
 package com.solo.Personalproject.constant;
 
 public enum Kind {
-    //액상
+    //액상 1. HTML에 입호흡,폐호흡,전체상품 버튼 추가
+    //2.각 버튼을 눌렀을 때
     M_BREATHE("입호흡 액상"),
     P_BREATHE("폐호흡 액상"),
+    A_BREATHE("전체 액상"),
     M_MACHINE("입호흡 기기"),
     P_MACHINE("폐호흡 기기"),
     O_MACHINE("일회용 기기"),

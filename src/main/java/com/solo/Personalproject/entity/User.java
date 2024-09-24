@@ -22,6 +22,10 @@ public class User {
     private String picture;
 
     private String role = "ROLE_USER";
+
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
     public User(String name,String email,String picture) {
         this.name = name;
         this.email = email;

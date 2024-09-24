@@ -31,8 +31,19 @@ public class Member extends BaseEntity {
     private String detailAddress;
     private String tel;
 
+    private String picture;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+    // 소셜 로그인 사용자를 생성하는 메서드
+    public static Member createSocialUser(String name, String email, String picture) {
+        Member member = new Member();
+        member.setName(name);
+        member.setEmail(email);
+        member.setPicture(picture);
+        member.setRole(Role.USER); // 기본적으로 소셜 로그인 사용자는 USER로 설정
+        return member;
+    }
 
     // 관리자 코드와 사용자를 생성하는 메서드
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder, String adminCodeFromConfig) {

@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header">
     <head>
+
         <style>
             html, body {
                 margin: 0;
@@ -108,6 +109,9 @@ li:hover .smenu li {
 .smenu li:nth-child(4) { transition-delay: .4s; }
 .smenu li:nth-child(5) { transition-delay: .5s; }
 .smenu li:nth-child(6) { transition-delay: .6s; }
+.smenu li:nth-child(7) { transition-delay: .7s; }
+.smenu li:nth-child(8) { transition-delay: .8s; }
+.smenu li:nth-child(9) { transition-delay: .9s; }
 
 .smenu li a {
     color: #000000; /* 기본 텍스트 색상: 검정색 */
@@ -145,6 +149,7 @@ li:hover .smenu li {
         </style>
     </head>
     <body>
+
     <nav id="navibar">
         <!-- 로고 섹션 -->
         <div class="logo">
@@ -168,6 +173,7 @@ li:hover .smenu li {
                 <ol class="smenu">
            <li> <a href="/cart">장바구니</a></li>
             <li><a href="/orders">구매이력</a></li>
+                    <li><a href="#">1:1문의</a></li>
             <li><a th:href="@{/members/login}"
                th:if="${#authorization.expression('isAnonymous()')}"
                class="auth-button">로그인</a></li>
@@ -180,7 +186,11 @@ li:hover .smenu li {
             <li><a th:href="@{/admin/item/new}"
                th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 등록</a></li>
             <li><a th:href="@{/admin/items}"
-               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a></li>
+               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">상품 관리</a>
+            </li>
+                    <li><a th:href="@{/admin/board}"
+                           th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">문의 내역</a>
+                    </li>
                 </ol>
         </div>
         </li>

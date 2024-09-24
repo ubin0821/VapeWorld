@@ -23,6 +23,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
     private HttpSession httpSession;
 
     @Override
@@ -51,6 +53,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());
+
+        // 이메일로 기존 Member 조회
+        Member member = memberRepository.findByEmail(attributes.getEmail());
+
+        // 기존 Member가 없으면 생성
+        if (member == null) {
+            member = Member.createSocialUser(attributes.getName(), attributes.getEmail(), attributes.getPicture());
+            memberRepository.save(member);  // 새로운 Member 저장
+        }
+
+        // User에 Member 설정
+        user.setMember(member);
+
+        // User 저장
         return userRepository.save(user);
     }
 }
