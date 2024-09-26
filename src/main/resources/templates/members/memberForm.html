@@ -5,6 +5,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -132,64 +133,85 @@
         }
 
         if (password !== confirmPassword) {
-            message = "비밀번호가 일치하지 않습니다";
-            $("#passwordMatchMessage").text(message);
-            return false; // 폼 제출 방지
-        } else {
-            $("#passwordMatchMessage").text("비밀번호가 일치합니다");
-            return true; // 폼 제출 허용
-        }
+        Swal.fire({
+            title: "비밀번호가 일치하지 않습니다",
+            text: "두 비밀번호가 동일한지 확인해주세요.",
+            icon: "error"
+        });
+        return false; // 폼 제출 방지
+    } else {
+        $("#passwordMatchMessage").text("비밀번호가 일치합니다");
+        return true; // 폼 제출 허용
     }
+}
 
     function mailSend() {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var mail = $("#sendmail").val();
-        var url = "/members/" + mail + "/emailConfirm";
-        var paramData = { email: mail };
-        var param = JSON.stringify(paramData);
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var mail = $("#sendmail").val();
+    var url = "/members/" + mail + "/emailConfirm";
+    var paramData = { email: mail };
+    var param = JSON.stringify(paramData);
 
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/json",
-            data: param,
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            success: function(result) {
-                alert(result);
-            },
-            error: function(jqXHR) {
-                alert(jqXHR.responseText);
-            }
-        });
-    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: param,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(result) {
+            Swal.fire({
+                title: "이메일 발송 완료!",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 800
+            });
+        },
+        error: function(jqXHR) {
+            Swal.fire({
+                title: "이메일 발송 실패",
+                text: "이메일 발송 중 문제가 발생했습니다. 다시 시도해주세요.",
+                icon: "error"
+            });
+        }
+    });
+}
 
     function codeCheck() {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var code = $("#codecheck").val();
-        var url = "/members/" + code + "/codeCheck";
-        var paramData = { code: code };
-        var param = JSON.stringify(paramData);
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var code = $("#codecheck").val();
+    var url = "/members/" + code + "/codeCheck";
+    var paramData = { code: code };
+    var param = JSON.stringify(paramData);
 
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/json",
-            data: param,
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            success: function(result) {
-                alert(result);
-            },
-            error: function(jqXHR) {
-                alert(jqXHR.responseText);
-            }
-        });
-    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: param,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(result) {
+            Swal.fire({
+                title: "이메일 인증에 성공하셨습니다.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        },
+        error: function(jqXHR) {
+            Swal.fire({
+                title: "이메일 인증에 실패하셨습니다.",
+                text: "유효하지 않은 인증 코드입니다. 다시 시도해주세요.",
+                icon: "error"
+            });
+        }
+    });
+}
 
     function daumPost() {
         new daum.Postcode({
