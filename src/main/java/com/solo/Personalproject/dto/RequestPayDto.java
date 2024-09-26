@@ -24,4 +24,5 @@ public class RequestPayDto {
         this.buyerEmail = buyerEmail;
         this.buyerAddress = buyerAddress;
     }
+
 }

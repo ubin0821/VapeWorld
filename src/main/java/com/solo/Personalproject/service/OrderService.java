@@ -41,8 +41,13 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item,orderDto.getCount());
         orderItemList.add(orderItem);
         Payment payment = new Payment();
+        Order order = Order.createOrder(member, orderItemList, payment);
 
-        Order order = Order.createOrder(member,orderItemList, payment);
+        payment.setPaymentUid(order.getOrderUid());
+        payment.setPrice(order.getPrice());
+        payment.setStatus(PaymentStatus.OK);
+
+        paymentRepository.save(payment);
         orderRepository.save(order);
         return order.getId();
     }

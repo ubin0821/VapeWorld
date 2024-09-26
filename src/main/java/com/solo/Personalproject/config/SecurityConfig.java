@@ -17,10 +17,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+
+
     @Autowired
     MemberService memberService;
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,7 +31,7 @@ public class SecurityConfig {
         http.authorizeRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico", "/error","/consent").permitAll()
                 .requestMatchers("/", "/members/**","/item/**","/images/**","/orders/**","/payment/**"
-                                ,"/liquid_phase","/machine","/consumables","/popup","/pop","/event/**","/delete").permitAll()
+                                ,"/liquid_phase","/machine","/consumables","/popup","/pop","/event/**","/delete","/cart","/orders").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).formLogin(formLogin -> formLogin

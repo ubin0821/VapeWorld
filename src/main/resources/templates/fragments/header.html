@@ -3,6 +3,28 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header">
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            function promptLoginForCart() {
+                Swal.fire({
+                    title: "로그인 하셨나요?",
+                    text: "장바구니는 로그인 후 이용 부탁드립니다.",
+                    icon: "question"
+                }).then(() => {
+                    location.href = '/members/login';
+                });
+            }
+
+            function promptLoginForOrders() {
+                Swal.fire({
+                    title: "로그인 하셨나요?",
+                    text: "구매이력은 로그인 후 이용 부탁드립니다.",
+                    icon: "question"
+                }).then(() => {
+                    location.href = '/members/login';
+                });
+            }
+        </script>
         <style>
             html, body {
                 margin: 0;
@@ -167,8 +189,14 @@ li:hover .smenu li {
             <a href="#">마이메뉴</a>
             <div class="sbox s8">
                 <ol class="smenu">
-           <li> <a href="/cart">장바구니</a></li>
-            <li><a href="/orders">구매이력</a></li>
+                    <li>
+                        <a href="#" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/cart}">장바구니</a>
+                        <a href="#" th:if="${#authorization.expression('isAnonymous()')}" onclick="promptLoginForCart()">장바구니</a>
+                    </li>
+                    <li>
+                        <a href="#" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/orders}">구매이력</a>
+                        <a href="#" th:if="${#authorization.expression('isAnonymous()')}" onclick="promptLoginForOrders()">구매이력</a>
+                    </li>
             <li><a th:href="@{/members/login}"
                th:if="${#authorization.expression('isAnonymous()')}"
                class="auth-button">로그인</a></li>

@@ -77,23 +77,28 @@ public class InventoryController {
     }
     @GetMapping(value ={"/consumables","/consumables/{page}"})
     public String coList(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal) {
-        String email = principal.getName(); // 로그인된 사용자의 이메일 가져오기
-        Member member = memberService.memberload(email); // 이메일로 Member 객체 조회
+        if (principal != null) {
+            String email = principal.getName(); // 로그인된 사용자의 이메일 가져오기
+            Member member = memberService.memberload(email); // 이메일로 Member 객체 조회
 
-        if (member != null && member.getName() != null) {
-            model.addAttribute("name", member.getName()); // 실제 사용자 이름 추가
-        } else {
-            model.addAttribute("name", "회원"); // 사용자 이름을 못 찾았을 때 대체 텍스트
+            if (member != null && member.getName() != null) {
+                model.addAttribute("name", member.getName()); // 실제 사용자 이름 추가
+            } else {
+                model.addAttribute("name", "회원"); // 사용자 이름을 못 찾았을 때 대체 텍스트
+            }
         }
+
         Pageable pageable = PageRequest.of(page.orElse(0), 20); // 페이지당 20개씩
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
 
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
-        Page<MainItemDto> getCategoryItemPage=itemService.getCategoryItemPage(itemSearchDto,pageable,Category.CONSUMABLES);
+        Page<MainItemDto> getCategoryItemPage = itemService.getCategoryItemPage(itemSearchDto, pageable, Category.CONSUMABLES);
         model.addAttribute("items", getCategoryItemPage);
         model.addAttribute("totalCount", itemService.countItemsByCategory(Category.CONSUMABLES));
+
         return "inventory/consumables";
     }
+
 }

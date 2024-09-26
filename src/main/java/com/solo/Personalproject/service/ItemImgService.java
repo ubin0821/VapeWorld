@@ -27,7 +27,7 @@ public class ItemImgService {
         //파일 업로드
         if (!StringUtils.isEmpty(oriImgName)){ // oriImgName 문자열로 비어 있지 않으면 실행
             imgName = fileService.uploadFile(itemImgLocation,oriImgName,itemImgFile.getBytes());
-            imgUrl = "/images/item/"+imgName;
+            imgUrl = "images/item/"+imgName;
         }
         //상품 이미지 정보 저장
         // oriImgName : 상품 이미지 파일의 원래 이름
@@ -48,7 +48,7 @@ public class ItemImgService {
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(itemImgLocation,oriImgName,
                     itemImgFile.getBytes());
-            String imgUrl = "/images/item/"+imgName;
+            String imgUrl = "images/item/"+imgName;
             // 변경된 상품 이미지 정보를 세팅
             // 상품 등록을 하는 경우에는 ItemImgRepository.save()로직을 호출하지만
             // 호출 하지 않았음.

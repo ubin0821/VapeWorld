@@ -33,16 +33,26 @@ public class PaymentController {
         // Constructor
 
 
-        @GetMapping("/payment/{id}")
-        public String paymentPage(@PathVariable(name = "id", required = false) String id, Model model, Principal principal) {
-            System.out.println(id);
+    @GetMapping("/payment/{id}")
+    public String paymentPage(@PathVariable(name = "id", required = false) String id, Model model, Principal principal) {
+        System.out.println(id);
 
-            Member member = memberService.memberload(principal.getName());
-            RequestPayDto requestDto = paymentService.findRequestDto(Long.valueOf(id));
+        if (principal != null) {
+            String email = principal.getName(); // 로그인된 사용자의 이메일 가져오기
+            Member member = memberService.memberload(email); // 이메일로 Member 객체 조회
 
-            model.addAttribute("requestDto", requestDto);
-            return "order/payment";
+            if (member != null && member.getName() != null) {
+                model.addAttribute("name", member.getName()); // 실제 사용자 이름 추가
+            } else {
+                model.addAttribute("name", "회원"); // 사용자 이름을 못 찾았을 때 대체 텍스트
+            }
         }
+
+        RequestPayDto requestDto = paymentService.findRequestDto(Long.valueOf(id));
+        model.addAttribute("requestDto", requestDto);
+
+        return "order/payment";
+    }
 
         @PostMapping(value = "/payment")
         public @ResponseBody ResponseEntity<IamportResponse<Payment>> validationPayment(@RequestBody PaymentCallbackRequest request) {
