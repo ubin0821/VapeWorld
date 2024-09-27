@@ -4,159 +4,170 @@
       layout:decorate="~{layouts/layout1}">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <title>VapeWorld</title>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".slide_div").slick({
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                adaptiveHeight: true  <!-- 슬라이드 높이를 이미지에 맞춰 자동으로 조정 -->
+            });
+
+            // Add animation to text as slides change
+            $('.slide_div').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+                $(".slide_text").fadeOut();  // Fade out previous text
+            });
+
+            $('.slide_div').on('afterChange', function(event, slick, currentSlide){
+                // Show text depending on which slide is active
+                if(currentSlide === 0) {
+                    $("#slide1-text").fadeIn();
+                } else if(currentSlide === 1) {
+                    $("#slide2-text").fadeIn();
+                }
+            });
+        });
+    </script>
     <style>
-        .card {
+        .slide_div img {
+            width: 100%;  /* 슬라이드 너비에 맞춰 이미지가 조정됨 */
+            height: auto; /* 이미지 비율을 유지하면서 자동으로 높이 조정 */
+            margin: auto;
+        }
+        .slide_div_wrap {
             position: relative;
-            overflow: hidden;
-            border-radius: 10px; /* 모서리 둥글게 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드 그림자 */
+            padding: 15px 0;
+            background: #e6e9f6;
+        }
+        .slide_text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 2rem;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            display: none;  /* Text is hidden by default */
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             transition: transform 0.3s ease;
         }
-
-        .card:hover {
-            transform: scale(1.05); /* 마우스 오버 시 카드 확대 효과 */
-        }
-
         .card img {
             display: block;
             width: 100%;
             height: auto;
-            border-bottom: 2px solid #f1f1f1; /* 이미지 아래 경계선 */
+            border-bottom: 2px solid #f1f1f1;
         }
-
         .card-body {
-            opacity: 0; /* 기본적으로 숨김 */
-            transition: opacity 0.3s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7); /* 더 진한 오버레이 */
-            color: white;
-            display: flex;
-            justify-content: center; /* 가로 중앙 정렬 */
-            align-items: center; /* 세로 중앙 정렬 */
-            flex-direction: column; /* 텍스트를 세로로 정렬 */
             text-align: center;
-            padding: 20px; /* 여백 추가 */
+            padding: 15px;
         }
-
-        .card:hover .card-body {
-            opacity: 1; /* 마우스 올리면 보이도록 */
-        }
-
-        .card-body h4, .card-body h3 {
-            margin: 0;
-        }
-
         .card-body h4 {
-            font-size: 1.3rem; /* 상품명 폰트 크기 조정 */
-            font-weight: bold; /* 두꺼운 폰트 */
+            font-size: 1.5rem; /* 크기 조정 */
+            font-weight: 700; /* 폰트 굵기 */
+            margin: 0 0 10px;
+            color: #333; /* 좀 더 진한 색상 */
+            font-family: 'Arial', sans-serif; /* 깔끔한 폰트 */
         }
 
         .card-body h3 {
-            font-size: 1.6rem; /* 가격 폰트 크기 조정 */
-            color: #f1c40f; /* 숫자 색상 변경 (금색) */
+            font-size: 1.8rem; /* 가격 크기 확대 */
+            color: #e67e22; /* 강조되는 색상 */
+            margin: 0;
+            font-weight: 600; /* 굵게 설정 */
+            font-family: 'Arial', sans-serif;
         }
-
         .card-body h3::after {
-            content: '원'; /* 가격 뒤에 원 추가 */
-            color: #ffffff; /* '원' 글자색 조정 (흰색) */
+            content: ' 원';
+            color: #000;
         }
-
-        /* 페이지 네비게이션 스타일 */
+        @media (max-width: 768px) {
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .col {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .pagination .page-link {
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
         .pagination {
             display: flex;
             justify-content: center;
             padding: 0;
             margin: 0;
         }
-
         .pagination .page-item {
-            margin: 0 4px; /* 버튼 간 간격 조정 */
+            margin: 0 4px;
         }
-
         .pagination .page-link {
             display: inline-block;
-            padding: 8px 12px; /* 버튼 크기 조정 */
+            padding: 8px 12px;
             border-radius: 50%;
-            background-color: #ff6f61; /* 버튼 배경색 (살구색) */
-            color: #fff; /* 버튼 글자색 (흰색) */
+            background-color: #ff6f61;
+            color: #fff;
             border: none;
             font-weight: bold;
             text-align: center;
-            font-size: 0.9rem; /* 글자 크기 조정 */
+            font-size: 0.9rem;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .pagination .page-link:hover {
-            background-color: #ff3b30; /* 버튼 호버 색상 (빨간색) */
-            color: #fff; /* 버튼 호버 시 글자색 (흰색) */
+            background-color: #ff3b30;
+            color: #fff;
         }
-
         .pagination .page-item.disabled .page-link {
-            background-color: #e0e0e0; /* 비활성 버튼 배경색 (회색) */
-            color: #b0b0b0; /* 비활성 버튼 글자색 (회색) */
+            background-color: #e0e0e0;
+            color: #b0b0b0;
             cursor: not-allowed;
         }
-
         .pagination .page-item.active .page-link {
-            background-color: #ff3b30; /* 활성 페이지 배경색 (빨간색) */
-            color: #fff; /* 활성 페이지 글자색 (흰색) */
+            background-color: #ff3b30;
+            color: #fff;
         }
-
     </style>
-    <script>
-        // 가격에 쉼표 추가하는 함수
-        function formatPrice(price) {
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.card-body h3').forEach(element => {
-                const priceText = element.innerText.replace(' 원', '');
-                const formattedPrice = formatPrice(parseInt(priceText.replace(/,/g, ''), 10));
-                element.innerText = formattedPrice;
-            });
-        });
-        function getCookie(name) {
-    var obj = name + "=";
-    var x = 0;
-    while (x <= document.cookie.length) {
-      var y = (x + obj.length);
-      if (document.cookie.substring(x, y) == obj) {
-        if ((endOfCookie = document.cookie.indexOf(";", y)) == -1)
-          endOfCookie = document.cookie.length;
-        return unescape(document.cookie.substring(y, endOfCookie));
-      }
-      x = document.cookie.indexOf(" ", x) + 1;
-
-      if (x == 0) break;
-    }
-    return "";
-  }
-
-  function move() {
-    location = '/subscribe';
-  }
-  function popUp() {
-    const value = getCookie('divpop1');
-    if (!value) {
-      window.open("popup", "", "width=570px, height=600px");
-    }
-
-  }
-  window.onload = function () {
-    popUp();
-  };
-    </script>
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="slide_div_wrap">
+        <div class="slide_div">
+            <div>
+                <a>
+                    <img src="css/images/슬라이드 배너 1.jpg" width="">
+                </a>
+                <div id="slide1-text" class="slide_text">싸고 맛있는 액상이 이렇게 많다니! <br> 이거 완전 럭키비키자나🍀</div>
+            </div>
+            <div>
+                <a>
+                    <img src="css/images/슬라이드 배너 2.jpg">
+                </a>
+                <div id="slide2-text" class="slide_text">NASTY 일회용 출시 <br> 혁신의 시작</div>
+            </div>
+            <div>
+                <a>
+                    <img src="css/images/슬라이드 배너 3.png">
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <br>
+    <br>
     <div class="container text-center">
-        <div class="row row-cols-5">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5">
             <th:block th:each="item, status: ${items.getContent()}">
                 <div class="col">
                     <div class="card">
@@ -169,18 +180,13 @@
                         </a>
                     </div>
                 </div>
-                <th:block th:if="${status.index % 5 == 4}">
-        </div>
-        <div class="row row-cols-5">
-            </th:block>
+                <th:block th:if="${status.index % 5 == 4}"></th:block>
             </th:block>
         </div>
     </div>
-    <br>
-    <br>
+    <br><br>
     <div th:with="start=${(items.number/maxPage)*maxPage +1},
-             end=(${(items.totalPages == 0) ? 1 :(start + (maxPage-1) < items.totalPages ?
-             start + (maxPage -1) : items.totalPages)})">
+             end=(${(items.totalPages == 0) ? 1 :(start + (maxPage-1) < items.totalPages ? start + (maxPage -1) : items.totalPages)})">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${items.number eq 0}?'disabled'">
                 <a th:href="@{'/'+ '?searchQuery=' +${itemSearchDto.searchQuery} + '&page='+${items.number-1}}"
