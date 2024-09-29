@@ -43,17 +43,21 @@
             padding: 15px 0;
             background: #e6e9f6;
         }
-        .slide_text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 2rem;
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            display: none;  /* Text is hidden by default */
-        }
+        .slide_div div {
+    position: relative; /* 텍스트 위치 기준이 되는 슬라이드 컨테이너 */
+}
+
+.slide_text {
+    position: absolute;
+    top: 20%;
+    bottom: 50%;
+    right: 30%;
+    color: #fff;
+    font-size: 1.7rem;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    display: none;  /* 기본적으로 텍스트는 숨겨져 있음 */
+}
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
